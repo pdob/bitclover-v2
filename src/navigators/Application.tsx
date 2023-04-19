@@ -7,7 +7,8 @@ import {
 } from '@react-navigation/native'
 import MainNavigator from './Main'
 import { useFlipper } from '@react-navigation/devtools'
-import { ApplicationStackParamList } from '../types/navigation'
+import { ApplicationStackParamList } from '../types/Navigation'
+import colors from '../constants/colors'
 
 const Stack = createNativeStackNavigator<ApplicationStackParamList>()
 
@@ -19,7 +20,7 @@ const ApplicationNavigator = () => {
   useFlipper(navigationRef)
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
       <NavigationContainer>
         <StatusBar/>
         <Stack.Navigator screenOptions={{ headerShown: false }}>

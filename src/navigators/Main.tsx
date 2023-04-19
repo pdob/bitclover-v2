@@ -7,16 +7,20 @@ import Favourites from '../screens/Favourites'
 import Settings from '../screens/Settings'
 import TabBarIcon from '../components/TabBarIcon'
 import icons from '../constants/icons'
+import { useAppSelector } from '../hooks/redux'
+import colors from '../constants/colors'
 
 const MainTab = createBottomTabNavigator()
 
 // @refresh reset
 const MainNavigator = () => {
+  const initialScreen = useAppSelector((state) => state.settings.initialScreen)
   return (
     <MainTab.Navigator
+      initialRouteName={initialScreen}
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: '#000000',
+          backgroundColor: colors.backgroundPrimary,
           height: 50,
           borderTopWidth: 0
         },

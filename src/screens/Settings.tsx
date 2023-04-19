@@ -1,44 +1,55 @@
 import React from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
 import DropdownMenu from '../components/DropdownMenu'
 import HomeHeader from '../components/HomeHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { changeCurrency, changeInitialScreen } from '../store/slices/settingsSlice'
+import colors from '../constants/colors'
 
 const Settings = () => {
   const dispatch = useAppDispatch()
   const currency = useAppSelector((state) => state.settings.currency)
+  const initialScreen = useAppSelector((state) => state.settings.initialScreen)
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.background}>
       <HomeHeader />
       <View style={{ padding: 15 }}>
         <View style={{ paddingBottom: 20 }}>
-          <Text>
-            Default Currency: {currency}
+          <Text style={styles.headingText}>
+            Default Currency
           </Text>
-          <DropdownMenu 
-            options={[{key: '1', value: 'GBP'}, {key: '2', value: 'USD'}]}
-            placeholder="Yoyo siema tu pasiu"
-            initialItemIndex={0}
-            onSelect={(item) => dispatch(changeCurrency(item.value))}
+          <DropdownMenu
+            currentValue={currency} 
+            options={['GBP', 'USD', 'EUR']}
+            onSelect={(item) => dispatch(changeCurrency(item))}
           />
         </View>
         <View>
-          <Text>
+          <Text style={styles.headingText}>
             Initial Screen
           </Text>
-          <DropdownMenu 
-            options={[{key: '1', value: 'Home'}, {key: '2', value: 'Markets'}]}
-            placeholder="Yoyo siema tu pasiu"
-            initialItemIndex={0}
-            onSelect={(item) => dispatch(changeInitialScreen(item.value))}
+          <DropdownMenu
+            currentValue={initialScreen} 
+            options={['Home', 'Markets', 'Exchanges', 'Favourites', 'Settings']}
+            onSelect={(item) => dispatch(changeInitialScreen(item))}
           />
         </View>
       </View>
     </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  background: {
+    backgroundColor: colors.backgroundPrimary,
+    flex: 1
+  },
+  headingText: {
+    color: colors.text,
+    fontSize: 20
+  }
+})
 
 export default Settings
