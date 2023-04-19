@@ -1,28 +1,24 @@
 import React, { ReactElement, useRef, useState, useEffect } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, interpolate } from 'react-native-reanimated'
+import colors from '../constants/colors'
 import Separator from './Separator'
 
-export type DropdownOption = {
-  key: string,
-  value: string,
-  Icon?: ReactElement
-}
 
 const DropdownMenu = ({
   options,
-  placeholder,
+  currentValue,
   onSelect,
   initialItemIndex,
 } : {
-  options: DropdownOption[]
-  placeholder: string
-  onSelect: (item: DropdownOption) => void
+  options: string[]
+  currentValue: string
+  onSelect: (item: string) => void
   initialItemIndex?: number
 }) => {
 
   const [openDropdown, setOpenDropdown] = useState<boolean>(false)
-  const [selectedItem, setSelectedItem] = useState<DropdownOption>()
+  const [selectedItem, setSelectedItem] = useState<string>(currentValue)
 
   const offset = useSharedValue(0)
 
@@ -32,14 +28,6 @@ const DropdownMenu = ({
     }
   })
 
-
-  useEffect(() => {
-    if ((initialItemIndex || initialItemIndex === 0) && ((initialItemIndex + 1) <= options.length)) {
-      setSelectedItem(options[initialItemIndex])
-    } else if (options.length === 1) {
-      setSelectedItem(options[0])
-    }
-  }, [initialItemIndex, options])
 
   return (
     <Pressable
@@ -51,14 +39,12 @@ const DropdownMenu = ({
       <View style={styles.option}
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          {selectedItem?.Icon}
           <Text
             style={{
-              paddingLeft: selectedItem?.Icon ? 15 : 0,
-              color: 'black'
+              color: colors.text
             }}
           >
-            {selectedItem?.value || placeholder}
+            {selectedItem}
           </Text>
           {options.length > 1 ? (
             <Animated.Image
@@ -79,14 +65,14 @@ const DropdownMenu = ({
               }}
             >
               <Separator
-                color='grey'
+                color={colors.separator}
               />
             </View>
           ) : null}
             
           {openDropdown ? options.map((option) => (
             <Pressable 
-              key={option.key} 
+              key={Math.random() * 1231231}
               style={{ paddingVertical: 10, flexDirection: 'row' }}
               onPress={() => {
                 setSelectedItem(option)
@@ -95,10 +81,12 @@ const DropdownMenu = ({
             >
               <Text
                 style={{
-                  color: selectedItem?.key === option.key ? 'red' : 'black'
+                  color: selectedItem === option ? '#060907' : colors.text,
+                  fontWeight: selectedItem === option ? '600' : '400'
                 }}
+                
               >
-                {option.value}
+                {option}
               </Text>
             </Pressable>
           )) : null}
@@ -111,7 +99,8 @@ const DropdownMenu = ({
 }
 const styles = StyleSheet.create({
   background: {
-    backgroundColor:  '#E5E5E5'
+    backgroundColor:  colors.backgroundTernary,
+    borderRadius: 10
   },
   option: {
     paddingHorizontal: 15,
@@ -119,6 +108,9 @@ const styles = StyleSheet.create({
     borderRadius:      10,
     borderWidth:       0.3,
     borderColor:       'black',
+  },
+  text: {
+    color: colors.text
   }
 })
 
