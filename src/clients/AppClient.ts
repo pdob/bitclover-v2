@@ -2,6 +2,7 @@
 import Config from 'react-native-config'
 import { RequestParams } from '../../types/api/Api'
 import { CoinData } from '../../types/Home'
+import { SupportedCurrencies } from '../types/Home'
 
 class AppClient {
   private API_URL: string
@@ -22,8 +23,8 @@ class AppClient {
     return response.json()
   }
   
-  public async getAllCoinPrices() {
-    const response = await this.makeRequest<CoinData[]>('markets?vs_currency=gbp&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en')
+  public async getAllCoinPrices(currency: SupportedCurrencies) {
+    const response = await this.makeRequest<CoinData[]>(`markets?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`)
     return response
   }
 }
