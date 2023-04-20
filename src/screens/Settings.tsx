@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, ScrollView, Linking } from 'react-native'
 import DropdownMenu from '../components/DropdownMenu'
 import HomeHeader from '../components/HomeHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { changeCurrency, changeInitialScreen } from '../store/slices/settingsSlice'
 import colors from '../constants/colors'
+import MenuOption from '../components/MenuOption'
 
 const Settings = () => {
   const dispatch = useAppDispatch()
@@ -15,7 +16,7 @@ const Settings = () => {
   return (
     <SafeAreaView style={styles.background}>
       <HomeHeader />
-      <View style={{ padding: 15 }}>
+      <ScrollView style={{ padding: 15, flex: 1 }}>
         <View style={{ paddingBottom: 20 }}>
           <Text style={styles.headingText}>
             Default Currency
@@ -36,7 +37,14 @@ const Settings = () => {
             onSelect={(item) => dispatch(changeInitialScreen(item))}
           />
         </View>
-      </View>
+        <View style={{ paddingTop: 20, flex: 1 }}>
+          <Text style={styles.headingText}>About</Text>
+          <MenuOption option='Contact us' onPress={() => Linking.openURL('mailto: bitcloveruk@gmail.com')}/>
+          <MenuOption option='Privacy policy' />
+          <MenuOption option='Terms of use' />
+          <MenuOption option='Rate BitClover' />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -48,7 +56,9 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: colors.text,
-    fontSize: 20
+    fontSize: 23,
+    paddingBottom: 5,
+    fontWeight: '500'
   }
 })
 
