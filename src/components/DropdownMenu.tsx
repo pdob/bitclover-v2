@@ -8,13 +8,11 @@ import Separator from './Separator'
 const DropdownMenu = ({
   options,
   currentValue,
-  onSelect,
-  initialItemIndex,
+  onSelect
 } : {
   options: string[]
   currentValue: string
   onSelect: (item: string) => void
-  initialItemIndex?: number
 }) => {
 
   const [openDropdown, setOpenDropdown] = useState<boolean>(false)
@@ -24,7 +22,7 @@ const DropdownMenu = ({
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      transform: [{ rotateX: '180deg' }],
+      transform: [{ rotateX: openDropdown ? '180deg' : '0deg' }],
     }
   })
 
@@ -48,7 +46,7 @@ const DropdownMenu = ({
           </Text>
           {options.length > 1 ? (
             <Animated.Image
-              style={[{ height: 20, width: 20 }]}
+              style={[{ height: 20, width: 20 }, animatedStyles]}
               source={require('../assets/chevron-down.png')}
             />
           ) : null}
