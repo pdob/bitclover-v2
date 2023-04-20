@@ -4,13 +4,22 @@ import { View, Text, StyleSheet, Pressable, Image } from 'react-native'
 import colors from '../constants/colors'
 import { useAppSelector } from '../hooks/redux'
 import { getCurrencySymbol } from '../functions/utils'
+import { useNavigation } from '@react-navigation/core'
 
 const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
   const currency = useAppSelector((state) => state.settings.currency)
   const priceChangePositive = coinInfo.price_change_24h > 0
   const currencySymbol = getCurrencySymbol(currency)
+
+  const navigation = useNavigation()
+
   return (
-    <Pressable style={styles.horizontalFlatListContainer}>
+    <Pressable 
+      style={styles.horizontalFlatListContainer}
+      onPress={() => navigation.navigate('CoinInfo', {
+        coinId: coinInfo.id
+      })}
+    >
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{uri: coinInfo.image }} />
         <Text style={styles.horizontalFlatListTitle} numberOfLines={2}>
@@ -41,7 +50,7 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
             style={[styles.priceText, {color: coinInfo.price_change_24h > 0 ? 'green' : 'red'}]}
           >
             ({coinInfo.price_change_24h > 0 ? '+' : ''}
-            {coinInfo.price_change_percentage_24h.toFixed(3)}%)
+            {coinInfo.price_change_percentage_24h.toFixed(2)}%)
           </Text>
         </View>
       </View>
