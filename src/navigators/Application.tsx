@@ -9,6 +9,7 @@ import MainNavigator from './Main'
 import { useFlipper } from '@react-navigation/devtools'
 import { ApplicationStackParamList } from '../types/Navigation'
 import colors from '../constants/colors'
+import CoinInfo from '../screens/CoinInfo'
 
 const Stack = createNativeStackNavigator<ApplicationStackParamList>()
 
@@ -25,6 +26,7 @@ const ApplicationNavigator = () => {
         <StatusBar/>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Main" component={MainNavigator} />
+          <Stack.Screen name="CoinInfo" component={CoinInfo} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
