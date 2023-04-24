@@ -9,17 +9,18 @@ import { useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
 
 const Home = () => {
-  const [data, setData] = useState<CoinData[]>([])
+  const [data, setData] = useState<SortedData>()
   const [error, setError] = useState<boolean>(false)
   const currency = useAppSelector((state) => state.settings.currency)
   
   useEffect(() => {
     const getData = async () => {
       try {
-        const ble = await appClient.getAllCoinPrices(currency)
-        setData(ble)
+        const json = await appClient.getAllCoinPrices(currency)
+        console.log(json)
+        setData(sortData(json))
       } catch (error) {
-        console.log(error)
+        throw new Error('Error loading data')
         setError(true)
       }
     }
@@ -41,9 +42,6 @@ const Home = () => {
       loss
     }
   }
-  const sortedData = sortData(data)
-
-  console.log(sortedData.loss[1])
 
   return (
     <SafeAreaView style={styles.background}>
@@ -52,7 +50,7 @@ const Home = () => {
         <View style={styles.flatlistContainer}>
           <Text style={styles.headingText}>Most Popular</Text>
           <FlatList 
-            data={sortedData.popular}
+            data={data?.popular}
             renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
             keyExtractor={item => item.id}
             horizontal
@@ -61,7 +59,7 @@ const Home = () => {
         <View style={styles.flatlistContainer}>
           <Text style={styles.headingText}>Highest Gainers</Text>
           <FlatList 
-            data={sortedData.gain}
+            data={data?.gain}
             renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
             keyExtractor={item => item.id}
             horizontal
@@ -69,8 +67,8 @@ const Home = () => {
         </View>
         <View style={styles.flatlistContainer}>
           <Text style={styles.headingText}>Biggest Losers</Text>
-          <FlatList 
-            data={sortedData.loss}
+          <FlatList
+            data={data?.loss}
             renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
             keyExtractor={item => item.id}
             horizontal
@@ -89,7 +87,8 @@ const styles = StyleSheet.create({
   flatlistContainer: {
     borderRadius: 10,
     backgroundColor: colors.backgroundSecondary, 
-    padding: 5
+    padding: 10,
+    height: 200
   },
   headingText: {
     color: colors.text,
