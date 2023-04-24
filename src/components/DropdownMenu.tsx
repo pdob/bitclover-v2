@@ -1,6 +1,6 @@
 import React, { ReactElement, useRef, useState, useEffect } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, interpolate } from 'react-native-reanimated'
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import colors from '../constants/colors'
 import Separator from './Separator'
 
@@ -18,11 +18,9 @@ const DropdownMenu = ({
   const [openDropdown, setOpenDropdown] = useState<boolean>(false)
   const [selectedItem, setSelectedItem] = useState<string>(currentValue)
 
-  const offset = useSharedValue(0)
-
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      transform: [{ rotateX: openDropdown ? '180deg' : '0deg' }],
+      transform: [{ rotateX: withSpring(openDropdown ? '180deg' : '0deg')}],
     }
   })
 
@@ -38,9 +36,7 @@ const DropdownMenu = ({
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text
-            style={{
-              color: colors.text
-            }}
+            style={styles.text}
           >
             {selectedItem}
           </Text>
@@ -78,10 +74,10 @@ const DropdownMenu = ({
               }}
             >
               <Text
-                style={{
+                style={[styles.text, {
                   color: selectedItem === option ? '#060907' : colors.text,
                   fontWeight: selectedItem === option ? '600' : '400'
-                }}
+                }]}
                 
               >
                 {option}
@@ -104,11 +100,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical:   20,
     borderRadius:      10,
-    borderWidth:       0.3,
-    borderColor:       'black',
+    borderWidth:       0.5,
+    borderColor:       colors.text,
   },
   text: {
-    color: colors.text
+    color: colors.text,
+    fontWeight: '600',
+    fontSize: 14
   }
 })
 
