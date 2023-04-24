@@ -11,6 +11,8 @@ const Button = ({buttonText, onPress}: {buttonText: string, onPress: () => void}
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
+      borderWidth: 0.5,
+      borderColor: colors.text
       
     }} 
     onPress={onPress}
