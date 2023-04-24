@@ -17,27 +17,29 @@ const Settings = () => {
     <SafeAreaView style={styles.background}>
       <HomeHeader />
       <ScrollView style={{ padding: 15, flex: 1 }}>
-        <View style={{ paddingBottom: 20 }}>
-          <Text style={styles.headingText}>
+        <View style={styles.dropdownContainer}>
+          <View style={{ paddingBottom: 20 }}>
+            <Text style={styles.headingText}>
             Default Currency
-          </Text>
-          <DropdownMenu
-            currentValue={currency} 
-            options={['GBP', 'USD', 'EUR']}
-            onSelect={(item) => dispatch(changeCurrency(item))}
-          />
-        </View>
-        <View>
-          <Text style={styles.headingText}>
+            </Text>
+            <DropdownMenu
+              currentValue={currency} 
+              options={['GBP', 'USD', 'EUR']}
+              onSelect={(item) => dispatch(changeCurrency(item))}
+            />
+          </View>
+          <View>
+            <Text style={styles.headingText}>
             Initial Screen
-          </Text>
-          <DropdownMenu
-            currentValue={initialScreen} 
-            options={['Home', 'Markets', 'Exchanges', 'Favourites', 'Settings']}
-            onSelect={(item) => dispatch(changeInitialScreen(item))}
-          />
+            </Text>
+            <DropdownMenu
+              currentValue={initialScreen} 
+              options={['Home', 'Markets', 'Exchanges', 'Favourites', 'Settings']}
+              onSelect={(item) => dispatch(changeInitialScreen(item))}
+            />
+          </View>
         </View>
-        <View style={{ paddingTop: 20, flex: 1 }}>
+        <View style={styles.aboutContainer}>
           <Text style={styles.headingText}>About</Text>
           <MenuOption option='Contact us' onPress={() => Linking.openURL('mailto: bitcloveruk@gmail.com')}/>
           <MenuOption option='Privacy policy' />
@@ -56,9 +58,20 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: colors.text,
-    fontSize: 23,
-    paddingBottom: 5,
+    fontSize: 18,
+    paddingBottom: 10,
     fontWeight: '500'
+  },
+  aboutContainer: {
+    backgroundColor: colors.backgroundSecondary,
+    marginTop: 20,
+    borderRadius: 10,
+    padding: 10
+  },
+  dropdownContainer: {
+    backgroundColor: colors.backgroundSecondary,
+    padding: 10,
+    borderRadius: 10
   }
 })
 
