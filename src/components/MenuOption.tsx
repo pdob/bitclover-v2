@@ -15,22 +15,15 @@ const MenuOption = ({
       onPress={onPress}
       style={styles.background}
     >
-      <View style={styles.option}
-      >
+      <View style={styles.option}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text
-            style={{
-              color: colors.text
-            }}
-          >
+          <Text style={styles.text}>
             {option}
           </Text>
-          
           <Image
             style={[{ height: 20, width: 20 }]}
             source={require('../assets/chevron-right.png')}
-          />
-          
+          />       
         </View>
       </View>
     </Pressable>
@@ -50,7 +43,9 @@ const styles = StyleSheet.create({
     borderColor:       'white',
   },
   text: {
-    color: colors.text
+    color: colors.text,
+    fontWeight: '600',
+    fontSize: 14
   }
 })
 
