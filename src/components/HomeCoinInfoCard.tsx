@@ -17,7 +17,8 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
     <Pressable 
       style={styles.horizontalFlatListContainer}
       onPress={() => navigation.navigate('CoinInfo', {
-        coinId: coinInfo.id
+        coinId: coinInfo.id,
+        coinName: coinInfo.name
       })}
     >
       <View style={styles.imageContainer}>
@@ -59,9 +60,6 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   image: {
     height: 21,
     width: 21,
@@ -89,6 +87,8 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 130,
     elevation: 20,
+    borderWidth: 0.5,
+    borderColor: colors.text
   },
   horizontalFlatListText: {
     color: 'white',
