@@ -24,7 +24,6 @@ const DropdownMenu = ({
     }
   })
 
-
   return (
     <Pressable
       onPress={() => {
@@ -32,8 +31,7 @@ const DropdownMenu = ({
       }}
       style={styles.background}
     >
-      <View style={styles.option}
-      >
+      <View style={styles.option}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text
             style={styles.text}
@@ -46,7 +44,6 @@ const DropdownMenu = ({
               source={require('../assets/chevron-down.png')}
             />
           ) : null}
-          
         </View>
       
         <Animated.View >
@@ -64,9 +61,9 @@ const DropdownMenu = ({
             </View>
           ) : null}
             
-          {openDropdown ? options.map((option) => (
+          {openDropdown ? options.map((option, index) => (
             <Pressable 
-              key={Math.random() * 1231231}
+              key={index}
               style={{ paddingVertical: 10, flexDirection: 'row' }}
               onPress={() => {
                 setSelectedItem(option)
@@ -75,8 +72,8 @@ const DropdownMenu = ({
             >
               <Text
                 style={[styles.text, {
-                  color: selectedItem === option ? '#060907' : colors.text,
-                  fontWeight: selectedItem === option ? '600' : '400'
+                  fontWeight: selectedItem === option ? '700' : '400',
+                  fontSize: selectedItem === option ? 15 : 14
                 }]}
                 
               >
@@ -85,9 +82,7 @@ const DropdownMenu = ({
             </Pressable>
           )) : null}
         </Animated.View>
-        
       </View>
-
     </Pressable>
   )
 }

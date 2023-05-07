@@ -4,5 +4,7 @@ export default {
   backgroundTernary: '#37474F',
   backgroundLight:'#607D8B',
   text: '#F4F4FB',
-  separator: '#808080'
+  separator: '#808080',
+  green: '#1ab422',
+  red: '#d30000'
 }

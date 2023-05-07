@@ -5,6 +5,7 @@ import colors from '../constants/colors'
 import { useAppSelector } from '../hooks/redux'
 import { getCurrencySymbol } from '../functions/utils'
 import { useNavigation } from '@react-navigation/core'
+import { formatCurrency } from '../functions/utils'
 
 const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
   const currency = useAppSelector((state) => state.settings.currency)
@@ -18,7 +19,8 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
       style={styles.horizontalFlatListContainer}
       onPress={() => navigation.navigate('CoinInfo', {
         coinId: coinInfo.id,
-        coinName: coinInfo.name
+        coinName: coinInfo.name,
+        coinImage: coinInfo.image
       })}
     >
       <View style={styles.imageContainer}>
@@ -29,7 +31,7 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
       </View>
       <View>
         <Text style={styles.horizontalFlatListText} numberOfLines={1} adjustsFontSizeToFit>
-          {currencySymbol}{coinInfo.current_price.toFixed(2)} 
+          {formatCurrency(coinInfo.current_price, currency)} 
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image 
