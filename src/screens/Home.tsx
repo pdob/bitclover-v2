@@ -7,21 +7,23 @@ import { CoinData, SortedData } from '../types/Home'
 import HomeCoinInfoCard from '../components/HomeCoinInfoCard'
 import { useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
+import { handleError } from '../functions/utils'
 
 const Home = () => {
   const [data, setData] = useState<SortedData>()
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
   const currency = useAppSelector((state) => state.settings.currency)
   
   useEffect(() => {
     const getData = async () => {
       try {
         const json = await appClient.getAllCoinPrices(currency)
-        console.log(json)
+        if (json?.status) {
+          setError(handleError(json.status))
+        }
         setData(sortData(json))
       } catch (error) {
-        throw new Error('Error loading data')
-        setError(true)
+        setError(handleError(error))
       }
     }
     getData()
