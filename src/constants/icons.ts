@@ -3,6 +3,8 @@ const icons = {
   athDate: require('../assets/icons/ath-date.png'),
   back: require('../assets/icons/back-icon.png'),
   circulatingSupply: require('../assets/icons/circulating-supply.png'),
+  fav: require('../assets/icons/fav-icon.png'),
+  favSelected: require('../assets/icons/fav-selected-icon.png'),
   home: require('../assets/icons/home-icon.png'),
   markets: require('../assets/icons/markets-icon.png'),
   exchanges: require('../assets/icons/exchanges-icon.png'),
