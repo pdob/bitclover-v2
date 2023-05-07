@@ -12,7 +12,7 @@ const initialState: SettingsSliceState = {
 }
 
 export const settingsSlice = createSlice({
-  name: 'currency',
+  name: 'settings',
   initialState,
   reducers: {
     changeCurrency: (state, action) => {

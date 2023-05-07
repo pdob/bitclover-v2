@@ -2,10 +2,11 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import settingsReducer from './slices/settingsSlice'
 import { persistReducer, persistStore } from 'redux-persist'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import favouritesReducer from './slices/favouritesSlice'
 
 const rootReducer = combineReducers({
-  settings: settingsReducer
+  settings: settingsReducer,
+  favourites: favouritesReducer
 })
 
 const persistConfig = {
