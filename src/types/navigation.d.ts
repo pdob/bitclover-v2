@@ -1,13 +1,10 @@
-import { NavigatorScreenParams } from '@react-navigation/native'
+import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { StackScreenProps } from '@react-navigation/stack'
 
 export type MainParamsList = {
-  Home: undefined;
-};
+  Home: undefined
+  CoinInfo: { coinId: string, coinName: string, coinImage: string }
+}
 
-export type ApplicationStackParamList = {
-  Main: NavigatorScreenParams<MainParamsList>
-};
-
-export type ApplicationScreenProps =
-  StackScreenProps<ApplicationStackParamList>;
+export type ApplicationScreenProps<T> =
+  NativeStackScreenProps<MainParamsList, T>
