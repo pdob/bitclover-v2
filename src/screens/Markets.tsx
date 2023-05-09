@@ -23,6 +23,81 @@ export const renderMarketItem = ({item} : {item: CoinData}) => {
     />
   )}
 
+const Header = ({
+  searchVisible,
+  query,
+  handleSearch,
+  setSearchVisible,
+  handlePress
+} : {
+  searchVisible: boolean
+  query: string
+  handleSearch: (query: string) => void
+  setSearchVisible: (searchVisible: boolean) => void
+  handlePress: (searchProp: string) => void
+}) => (
+  <View style={styles.header}>
+    {searchVisible ? (
+      <>
+        <View style={{ flex: 1,  flexDirection: 'row', justifyContent: 'center', paddingLeft: 75 }}>
+          <TextInput
+            value={query}
+            onChangeText={handleSearch}
+            style={{ 
+              height: 30, 
+              width: 125, 
+              backgroundColor: colors.backgroundTernary, 
+              borderRadius: 10,
+              paddingLeft: 5,
+              color: colors.text 
+            }}
+            autoFocus
+            selectionColor={colors.text}
+          />
+        </View>
+        <Pressable
+          onPress={() => setSearchVisible(!searchVisible)}
+          style={{ padding: 5, alignItems: 'center', width: 75 }}
+        >
+          <Text style={{ color: colors.text, fontWeight: '700' }}>
+            Cancel
+          </Text>
+        </Pressable>
+      </>
+    ) : (
+      <>
+        <Pressable
+          style={styles.headerSearch}
+          onPress={() => setSearchVisible(!searchVisible)}
+        >
+          <Image
+            source={require('../assets/icons/search.png')}
+            style={{ height: 22.5, width: 22.5 }} />
+        </Pressable>
+        <Pressable
+          style={styles.headerName}
+          onPress={() => handlePress('market_cap_rank')}
+        >
+          <Text style={styles.headerText}>Name</Text>
+        </Pressable>
+        <Pressable
+          style={styles.headerHours}
+          onPress={() => handlePress('price_change_percentage_24h')}
+        >
+          <Text style={styles.headerText}>24h</Text>
+        </Pressable>
+        <Pressable
+          style={styles.headerPrice}
+          onPress={() => handlePress('current_price')}
+        >
+          <Text style={styles.headerText}>Price</Text>
+        </Pressable>
+      </>
+    )}
+  </View>
+)
+  
+
 const Markets = () => {
 
   const [data, setData] = useState<CoinData[]>([])
@@ -30,6 +105,7 @@ const Markets = () => {
   const [sortedData, setSortedData] = useState<CoinData[]>([])
   const [query, setQuery] = useState<string>('')
   const [error, setError] = useState<string>('')
+  const [searchVisible, setSearchVisible] = useState<boolean>(false)
 
   const [sortOrder, setSortOrder] = useState('asc')
   const [sortProperty, setSortProperty] = useState('market_cap_rank')
@@ -63,10 +139,12 @@ const Markets = () => {
       try {
         const json = await appClient.getAllCoinPrices(currency, 500)
         if(json.status) {
-          setError(handleError(json.status))
+          // setError(handleError(json.status))
+          console.log(json.status)
+        } else  {
+          setData(json)
+          setFilteredData(json)
         }
-        setData(json)
-        setFilteredData(json)
       } catch (error) {
         setError(handleError(error))
       }
@@ -75,7 +153,7 @@ const Markets = () => {
   }, [currency])
 
   useEffect(() => {
-    setSortedData(filteredData.slice().sort(sortBy(sortProperty, sortOrder)))
+    setSortedData(filteredData?.slice().sort(sortBy(sortProperty, sortOrder)))
   }, [sortProperty, sortOrder, filteredData])
 
   const handleSearch = (query: string) => {
@@ -86,43 +164,18 @@ const Markets = () => {
     setFilteredData(newData)
   }
 
-  const Header = () => (
-    <View style={styles.header}>
-      <Pressable 
-        style={styles.headerSearch}
-      >
-        <Image 
-          source={require('../assets/icons/search.png')}
-          style={{height: 22.5, width: 22.5}}
-        />
-      </Pressable>
-      <Pressable
-        style={styles.headerName}
-        onPress={() => handlePress('market_cap_rank')}
-      >
-        <Text style={styles.headerText}>Name</Text>
-      </Pressable>
-      <Pressable
-        style={styles.headerHours}
-        onPress={() => handlePress('price_change_percentage_24h')}
-      >
-        <Text style={styles.headerText}>24h</Text>
-      </Pressable>
-      <Pressable
-        style={styles.headerPrice}
-        onPress={() => handlePress('current_price')}
-      >
-        <Text style={styles.headerText}>Price</Text>
-      </Pressable>
-    </View>
-  )
-  
   return (
     <SafeAreaView style={styles.container}>
       {error ? <Error error={error} /> : (
         <>
           <View>
-            <Header />
+            <Header 
+              searchVisible={searchVisible}
+              query={query}
+              handleSearch={handleSearch}
+              handlePress={handlePress}
+              setSearchVisible={setSearchVisible}
+            />
           </View>
           <View style={{ flex: 1 }}>
             <FlashList
@@ -166,7 +219,7 @@ const styles = StyleSheet.create({
     height: 50
   },  
   headerText: {
-    color: '#b6bab8',
+    color: colors.text,
     fontSize: 15,
     fontWeight: '700',
   },
