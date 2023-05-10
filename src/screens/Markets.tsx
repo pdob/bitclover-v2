@@ -9,6 +9,7 @@ import { CoinData } from '../types/Home'
 import MarketListItem from '../components/MarketListItem'
 import { handleError } from '../functions/utils'
 import Error from '../components/Error'
+import ListEmpty from '../components/ListEmpty'
 
 export const renderMarketItem = ({item} : {item: CoinData}) => {
   return (
@@ -139,7 +140,7 @@ const Markets = () => {
       try {
         const json = await appClient.getAllCoinPrices(currency, 500)
         if(json.status) {
-          // setError(handleError(json.status))
+          setError(handleError(json.status))
           console.log(json.status)
         } else  {
           setData(json)
@@ -183,7 +184,11 @@ const Markets = () => {
               data={query ? filteredData : sortedData}
               renderItem={renderMarketItem}
               ItemSeparatorComponent={() => <View style={{ backgroundColor: colors.separator, height: 0.5 }} />}
-              extraData={sortOrder} />
+              extraData={sortOrder} 
+              ListEmptyComponent={() => 
+                <ListEmpty message="Sorry, we can't find the asset you're looking for."/>
+              }
+            />
           </View>
         </>
       )}
