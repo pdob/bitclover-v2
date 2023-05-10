@@ -8,22 +8,28 @@ import HomeCoinInfoCard from '../components/HomeCoinInfoCard'
 import { useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
 import { handleError } from '../functions/utils'
+import Loader from '../components/Loader'
+import Error from '../components/Error'
 
 const Home = () => {
   const [data, setData] = useState<SortedData>()
   const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
   const currency = useAppSelector((state) => state.settings.currency)
   
   useEffect(() => {
     const getData = async () => {
       try {
+        setLoading(true)
         const json = await appClient.getAllCoinPrices(currency)
         if (json?.status) {
           setError(handleError(json.status))
         }
         setData(sortData(json))
+        setLoading(false)
       } catch (error) {
         setError(handleError(error))
+        setLoading(false)
       }
     }
     getData()
@@ -47,36 +53,46 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <HomeHeader />
-      <View style={{ flex: 1, justifyContent: 'space-evenly', paddingHorizontal: 10 }}>
-        <View style={styles.flatlistContainer}>
-          <Text style={styles.headingText}>Most Popular</Text>
-          <FlatList 
-            data={data?.popular}
-            renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
-            keyExtractor={item => item.id}
-            horizontal
-          />
-        </View>
-        <View style={styles.flatlistContainer}>
-          <Text style={styles.headingText}>Highest Gainers</Text>
-          <FlatList 
-            data={data?.gain}
-            renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
-            keyExtractor={item => item.id}
-            horizontal
-          />
-        </View>
-        <View style={styles.flatlistContainer}>
-          <Text style={styles.headingText}>Biggest Losers</Text>
-          <FlatList
-            data={data?.loss}
-            renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
-            keyExtractor={item => item.id}
-            horizontal
-          />
-        </View>
-      </View>
+      {error ? <Error error={error} /> : (
+        <>
+          <HomeHeader />
+          <View style={{ flex: 1, justifyContent: 'space-evenly', paddingHorizontal: 10 }}>
+            <View style={styles.flatlistContainer}>
+              <Text style={styles.headingText}>Most Popular</Text>
+              {loading ? <Loader /> : (
+                <FlatList 
+                  data={data?.popular}
+                  renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
+                  keyExtractor={item => item.id}
+                  horizontal
+                />
+              )}
+            </View>
+            <View style={styles.flatlistContainer}>
+              <Text style={styles.headingText}>Highest Gainers</Text>
+              {loading ? <Loader /> : (
+                <FlatList 
+                  data={data?.gain}
+                  renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
+                  keyExtractor={item => item.id}
+                  horizontal
+                />
+              )}
+            </View>
+            <View style={styles.flatlistContainer}>
+              <Text style={styles.headingText}>Biggest Losers</Text>
+              {loading ? <Loader /> : (
+                <FlatList
+                  data={data?.loss}
+                  renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
+                  keyExtractor={item => item.id}
+                  horizontal
+                />
+              )}
+            </View>
+          </View>
+        </>
+      )}
     </SafeAreaView>
   )
 }

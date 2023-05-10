@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import colors from '../constants/colors'
 import { useAppSelector } from '../hooks/redux'
@@ -7,41 +7,39 @@ import { renderMarketItem } from './Markets'
 import appClient from '../clients/AppClient'
 import { CoinData } from '../types/Home'
 import Error from '../components/Error'
-
-const FavEmpty = () => (
-  <View style={{ flex: 1 }}>
-    <Text style={{ color: colors.text }}>
-      Add some items to your favourites to see them here!
-    </Text>
-  </View>
-)
+import ListEmpty from '../components/ListEmpty'
+import { handleError } from '../functions/utils'
+import Loader from '../components/Loader'
 
 const Favourites = () => {
   const favourites = useAppSelector((state) => state.favourites.ids)
   const currency = useAppSelector((state) => state.settings.currency)
   const [data, setData] = useState<CoinData[]>()
-  const [error, setError] = useState()
+  const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const getData = async () => {
       try {
+        setLoading(true)
         const json = await appClient.fetchFavourites(favourites, currency)
-        setData(json)
+        if(json.status) {
+          setError(handleError(json.status))
+        } else {
+          setData(json)
+        }
+        setLoading(false)
       } catch (error) {
-        setError(error)
+        setError(handleError(error))
+        setLoading(false)
       }
-    }
-    if (data?.status) {
-      setError(data?.status?.error_message)
     }
     getData()
   }, [favourites, currency])
-
-  console.log(data?.status)
   
   return (
     <View style={{ backgroundColor: colors.backgroundPrimary, flex: 1}}>
-      {error ? <Error error={error} /> : (
+      {loading ? <Loader /> : error ? <Error error={error} /> : (
         <>
           <FlashList
             estimatedItemSize={75}
@@ -49,7 +47,7 @@ const Favourites = () => {
             data={data}
             renderItem={renderMarketItem}
             ItemSeparatorComponent={() => <View style={{ backgroundColor: colors.separator, height: 0.5 }} />}
-            ListEmptyComponent={() => <FavEmpty />} />
+            ListEmptyComponent={() => <ListEmpty message="Add some items to your favourites to see them here!"/>} />
         </>
       )}
     </View>

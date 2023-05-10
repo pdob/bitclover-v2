@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { View, Text, ScrollView, StyleSheet, TextInput, Pressable, Image } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Pressable, Image } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import colors from '../constants/colors'
@@ -10,6 +10,7 @@ import MarketListItem from '../components/MarketListItem'
 import { handleError } from '../functions/utils'
 import Error from '../components/Error'
 import ListEmpty from '../components/ListEmpty'
+import Loader from '../components/Loader'
 
 export const renderMarketItem = ({item} : {item: CoinData}) => {
   return (
@@ -105,6 +106,7 @@ const Markets = () => {
   const [filteredData, setFilteredData] = useState<CoinData[]>([])
   const [sortedData, setSortedData] = useState<CoinData[]>([])
   const [query, setQuery] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [searchVisible, setSearchVisible] = useState<boolean>(false)
 
@@ -138,16 +140,18 @@ const Markets = () => {
   useEffect(() => {
     const getData = async () => {
       try {
+        setLoading(true)
         const json = await appClient.getAllCoinPrices(currency, 500)
         if(json.status) {
           setError(handleError(json.status))
-          console.log(json.status)
         } else  {
           setData(json)
           setFilteredData(json)
         }
+        setLoading(false)
       } catch (error) {
         setError(handleError(error))
+        setLoading(false)
       }
     }
     getData()
@@ -167,7 +171,7 @@ const Markets = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {error ? <Error error={error} /> : (
+      {loading ? <Loader /> : error ? <Error error={error} /> : (
         <>
           <View>
             <Header 
