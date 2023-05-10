@@ -3,12 +3,13 @@ import { View, Text, Pressable, Image, StyleSheet, Linking } from 'react-native'
 import { useAppSelector } from '../hooks/redux'
 import { FlashList } from '@shopify/flash-list'
 import appClient from '../clients/AppClient'
-import { formatCurrency, handleError } from '../functions/utils'
+import { formatLargeNumbers, handleError } from '../functions/utils'
 import colors from '../constants/colors'
 import Separator from '../components/Separator'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Error from '../components/Error'
 import Loader from '../components/Loader'
+import { SupportedCurrencies } from '../types/Home'
 
 export type ExchangeItem = {
   id: string
@@ -32,7 +33,8 @@ const ExchangeListItem = ({
   volume,
   url, 
   country,
-  btcPrice
+  btcPrice,
+  currency
 } : {
   title: string
   image: string
@@ -40,41 +42,40 @@ const ExchangeListItem = ({
   volume: number
   url: string
   country: string
-  btcPrice: number
-}) => {
-  const currency = useAppSelector((state) => state.settings.currency)
-  return (
-    <View style={styles.flatlistContainer}>
-      <Pressable
-        style={styles.flatlistItem}
-        onPress={() => Linking.openURL(url)}>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: image
-            }}
-          />
-          <Text style={styles.statsText}>
-            {rank}. {title}
-            {'\n'}
-            <Text style={styles.flatlistSubheading}>{country}</Text>
-          </Text>
-        </View>
-        <View style={styles.stats}>
-          <Text style={styles.flatlistText}>
+  btcPrice: number,
+  currency: SupportedCurrencies
+}) => (
+  <View style={styles.flatlistContainer}>
+    <Pressable
+      style={styles.flatlistItem}
+      onPress={() => Linking.openURL(url)}>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: image
+          }}
+        />
+        <Text style={styles.statsText}>
+          {rank}. {title}
+          {'\n'}
+          <Text style={styles.flatlistSubheading}>{country}</Text>
+        </Text>
+      </View>
+      <View style={styles.stats}>
+        <Text style={styles.flatlistText}>
             24h volume: {'\n'}
-            <Text style={styles.flatlistSubheading} adjustsFontSizeToFit numberOfLines={1}>
-              BTC: {volume.toFixed(2)}
-              {'\n'}
-              {formatCurrency(volume * btcPrice, currency)}
-            </Text>
+          <Text style={styles.flatlistSubheading} adjustsFontSizeToFit >
+            BTC: {volume.toFixed(2)}
+            {'\n'}
+            {`${currency}: ${formatLargeNumbers(volume * btcPrice)}`}
           </Text>
-        </View>
-      </Pressable>
-    </View>
-  )
-}
+        </Text>
+      </View>
+    </Pressable>
+  </View>
+)
+
 
 const Exchanges = () => {
 
@@ -82,6 +83,8 @@ const Exchanges = () => {
   const [error, setError] = useState<string>('')
   const [btcPrice, setBtcPrice] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(false)
+  
+  const currency = useAppSelector((state) => state.settings.currency)
 
   useEffect(() => {
     const getData = async () => {
@@ -93,7 +96,7 @@ const Exchanges = () => {
           setError(handleError(json.status))
         } else {
           setData(json)
-          setBtcPrice(priceJson)
+          setBtcPrice(priceJson.bitcoin[currency.toLowerCase()])
         }
         setLoading(false)
       } catch (error) {
@@ -112,6 +115,7 @@ const Exchanges = () => {
       title={item.name}
       url={item.url}
       btcPrice={btcPrice}
+      currency={currency}
     />
   )
   
@@ -146,9 +150,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   flatlistText: {
-    color: colors.text,
-    fontSize: 14,
-    paddingLeft: 8,
+    color: colors.textDarker,
+    fontSize: 13,
+    fontWeight: '500'
   },
   flatlistSubheading: {
     color: colors.text,
@@ -167,7 +171,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   stats: {
-    width: '30%',
+    width: '35%',
+    justifyContent: 'flex-end'
   },
   statsText: {
     color: colors.text,
