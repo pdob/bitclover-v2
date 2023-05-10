@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native'
 import HomeHeader from '../components/HomeHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import appClient from '../clients/AppClient'
@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.background}>
       {error ? <Error error={error} /> : (
-        <>
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
           <HomeHeader />
           <View style={{ flex: 1, justifyContent: 'space-evenly', paddingHorizontal: 10 }}>
             <View style={styles.flatlistContainer}>
@@ -91,7 +91,7 @@ const Home = () => {
               )}
             </View>
           </View>
-        </>
+        </ScrollView>
       )}
     </SafeAreaView>
   )

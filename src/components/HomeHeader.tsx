@@ -16,7 +16,6 @@ const HomeHeader = () => {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: 'black',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

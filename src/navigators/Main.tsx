@@ -51,19 +51,19 @@ const MainNavigator = () => {
         }} 
       />
       <MainTab.Screen 
-        name="Exchanges" 
-        component={Exchanges} 
-        options={{
-          tabBarIcon: ({focused}) => 
-            <TabBarIcon iconSrc={icons.exchanges} focused={focused} />,
-        }}
-      />
-      <MainTab.Screen 
         name="Favourites" 
         component={Favourites} 
         options={{
           tabBarIcon: ({focused}) => 
             <TabBarIcon iconSrc={icons.fav} focused={focused} />,
+        }}
+      />
+      <MainTab.Screen 
+        name="Exchanges" 
+        component={Exchanges} 
+        options={{
+          tabBarIcon: ({focused}) => 
+            <TabBarIcon iconSrc={icons.exchanges} focused={focused} />,
         }}
       />
       <MainTab.Screen 

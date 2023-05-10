@@ -49,7 +49,7 @@ class AppClient {
   }
 
   public async getCoinPrice(id: string): Promise<CoinPrice> {
-    const response = await this.makeRequest<CoinPrice>(`simple/price?ids=${id}&vs_currencies=usd%2C%20gbp%2C%20eur`)
+    const response = await this.makeRequest<CoinPrice>(`simple/price?ids=${id}&vs_currencies=usd%2Cgbp%2Ceur`)
     return response
   }
 }
