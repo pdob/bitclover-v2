@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {Config} from 'react-native-config'
 import { TimePeriod } from '../screens/CoinInfo'
-import { ChartData } from '../types/CoinInfo'
+import { ChartData, CoinPrice } from '../types/CoinInfo'
 import { CoinData, SupportedCurrencies } from '../types/Home'
 import { ExchangeItem } from '../screens/Exchanges'
 
@@ -33,7 +32,7 @@ class AppClient {
   }
 
   public async getCoinChartData(id: string, currency: SupportedCurrencies, days: TimePeriod): ChartData {
-    const response = await this.makeRequest(`coins/${id}/market_chart?vs_currency=${currency}&days=${days}&interval=${
+    const response = await this.makeRequest<ChartData>(`coins/${id}/market_chart?vs_currency=${currency}&days=${days}&interval=${
       days <= 30 ? 'hourly' : 'daily'
     }`)
     return response
@@ -46,6 +45,11 @@ class AppClient {
   
   public async getAllExchanges(perPage = 50): Promise<ExchangeItem[]>{
     const response = await this.makeRequest<ExchangeItem[]>(`exchanges?per_page=${perPage}`)
+    return response
+  }
+
+  public async getCoinPrice(id: string): Promise<CoinPrice> {
+    const response = await this.makeRequest<CoinPrice>(`simple/price?ids=${id}&vs_currencies=usd%2C%20gbp%2C%20eur`)
     return response
   }
 }

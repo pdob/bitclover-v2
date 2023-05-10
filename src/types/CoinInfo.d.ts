@@ -52,3 +52,9 @@ export type CoinData = {
   total_supply: number
   total_volume: object
 }
+
+export type CoinPrice = {
+  [key: string]: {
+    [key: string]: number
+  }
+}
