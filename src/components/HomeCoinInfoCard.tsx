@@ -33,7 +33,7 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
         <Text style={styles.horizontalFlatListText} numberOfLines={1} adjustsFontSizeToFit>
           {formatCurrency(coinInfo.current_price, currency)} 
         </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={styles.priceContainer}>
           <Image 
             style={{ height: 10, width: 10 }}
             source={
@@ -47,7 +47,7 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
             {` ${currencySymbol}${coinInfo.price_change_24h.toFixed(2)}`}  
           </Text>
         </View>
-        <View>
+        <View style={styles.percentageContainer}>
           <Text
             adjustsFontSizeToFit
             style={[styles.priceText, {color: coinInfo.price_change_24h > 0 ? 'green' : 'red'}]}
@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 5,
     height: '35%',
+    overflow: 'hidden'
   },
   horizontalFlatListTitle: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
     paddingLeft: 3,
-    flex: 1,
-    paddingBottom: 10
+    flex: 1
   },
   horizontalFlatListContainer: {
     backgroundColor: colors.backgroundTernary,
@@ -90,17 +90,29 @@ const styles = StyleSheet.create({
     width: 130,
     elevation: 20,
     borderWidth: 0.5,
-    borderColor: colors.text
+    borderColor: colors.text,
+    flex: 1
   },
   horizontalFlatListText: {
-    color: 'white',
+    color: colors.text,
     fontSize: 16,
     fontWeight: '700',
-    paddingVertical: 7,
+    paddingTop: 7,
+    paddingBottom: 2
+  },
+  percentageContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center'
+  },
+  priceContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center'
   },
   priceText: {
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: '500',
+    flex: 1,
+    paddingVertical: 0.5
   }
 })
 

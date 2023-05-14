@@ -5,7 +5,7 @@ import colors from '../constants/colors'
 const Separator = ({
   color = colors.separator
 } : {
-  color: string
+  color?: string
 }) => {
   return (
     <View

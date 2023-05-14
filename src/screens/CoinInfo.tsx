@@ -152,19 +152,16 @@ const CoinInfo = ({
     case 30:
     case 60:
       return `${period}D`
-      break
     case 365:
       return '1Y'
-      break
     case 'max':
       return period.toUpperCase()
-      break
     }
   }
 
   const SelectTimePeriod = () => {
     return (
-      <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', height: 70, paddingVertical: 10 }}>
+      <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', height: 70, padding: 15 }}>
         {timePeriods.map((period, index) => (
           <Pressable
             key={index}
@@ -266,7 +263,7 @@ const CoinInfo = ({
               currencySymbol={getCurrencySymbol(currency)} 
             />
           </View>
-          <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingTop: 50 }}>
+          <View style={styles.buttonContainer}>
             <Button buttonText='Back' onPress={() => navigation.goBack()} />
           </View>
         </ScrollView>
@@ -278,12 +275,12 @@ const CoinInfo = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.backgroundPrimary,
-    padding: 15
+    backgroundColor: colors.backgroundPrimary
   },
   chartContainer: { 
     height: 300, 
-    flex: 1
+    flex: 1,
+    width: '100%'
   },
   chartDateTime: {
     color: 'grey',
@@ -338,6 +335,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: colors.backgroundSecondary,
+    margin: 15
   },
   image: {
     height: 15,
@@ -346,7 +344,8 @@ const styles = StyleSheet.create({
   },
   headingContainer: {
     flex: 1, 
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingHorizontal: 15
   },
   titleContainer: { 
     flexDirection: 'row', 
@@ -363,6 +362,12 @@ const styles = StyleSheet.create({
     paddingTop: 16, 
     color: colors.text,
     fontWeight: '700'
+  },
+  buttonContainer: {
+    flex: 1, 
+    justifyContent: 'flex-end', 
+    alignItems: 'center', 
+    paddingTop: 20
   }
 })
 

@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: colors.backgroundTernary,
     borderRadius: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   option: {
     paddingHorizontal: 15,
     paddingVertical:   20,
     borderRadius:      10,
     borderWidth:       0.5,
-    borderColor:       'white',
+    borderColor:       colors.text
   },
   text: {
     color: colors.text,
