@@ -10,6 +10,8 @@ import { useFlipper } from '@react-navigation/devtools'
 import { ApplicationStackParamList } from '../types/Navigation'
 import colors from '../constants/colors'
 import CoinInfo from '../screens/CoinInfo'
+import Privacy from '../screens/Privacy'
+import Terms from '../screens/Terms'
 
 const Stack = createNativeStackNavigator<ApplicationStackParamList>()
 
@@ -27,6 +29,8 @@ const ApplicationNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Main" component={MainNavigator} />
           <Stack.Screen name="CoinInfo" component={CoinInfo} />
+          <Stack.Screen name="Privacy" component={Privacy} />
+          <Stack.Screen name="Terms" component={Terms} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
