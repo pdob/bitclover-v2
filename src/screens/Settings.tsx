@@ -7,8 +7,10 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { changeCurrency, changeInitialScreen } from '../store/slices/settingsSlice'
 import colors from '../constants/colors'
 import MenuOption from '../components/MenuOption'
+import { ApplicationScreenProps } from '../types/Navigation'
+import InAppReview from 'react-native-in-app-review'
 
-const Settings = () => {
+const Settings = ({ navigation } : { navigation: ApplicationScreenProps<'Settings'>['navigation'] }) => {
   const dispatch = useAppDispatch()
   const currency = useAppSelector((state) => state.settings.currency)
   const initialScreen = useAppSelector((state) => state.settings.initialScreen)
@@ -16,7 +18,7 @@ const Settings = () => {
   return (
     <SafeAreaView style={styles.background}>
       <HomeHeader />
-      <ScrollView style={{ padding: 15, flex: 1 }}>
+      <ScrollView contentContainerStyle={{ padding: 15 }}>
         <View style={styles.dropdownContainer}>
           <View style={{ paddingBottom: 20 }}>
             <Text style={styles.headingText}>
@@ -42,9 +44,14 @@ const Settings = () => {
         <View style={styles.aboutContainer}>
           <Text style={styles.headingText}>About</Text>
           <MenuOption option='Contact us' onPress={() => Linking.openURL('mailto: bitcloveruk@gmail.com')}/>
-          <MenuOption option='Privacy policy' />
-          <MenuOption option='Terms of use' />
-          <MenuOption option='Rate BitClover' />
+          <MenuOption option='Privacy policy' onPress={() => navigation.navigate('Privacy')} />
+          <MenuOption option='Terms of use' onPress={() => navigation.navigate('Terms')} />
+          <MenuOption option='Rate BitClover' onPress={() => InAppReview.RequestInAppReview()}/>
+        </View>
+        <View style={{ flex : 1}}>
+          <Text style={{ color: colors.text, fontSize: 15, fontWeight: '500', paddingLeft: 7.5}}>
+            BitClover v1.0.0
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -64,14 +71,16 @@ const styles = StyleSheet.create({
   },
   aboutContainer: {
     backgroundColor: colors.backgroundSecondary,
-    marginTop: 20,
+    marginVertical: 20,
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    flex: 1
   },
   dropdownContainer: {
     backgroundColor: colors.backgroundSecondary,
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
+    flex: 1
   }
 })
 
