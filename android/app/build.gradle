@@ -93,12 +93,12 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.bitcloverv2"
+    namespace "com.pdob.bitclover"
     defaultConfig {
-        applicationId "com.bitcloverv2"
+        applicationId "com.pdob.bitclover"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 8
         versionName "1.0"
     }
 

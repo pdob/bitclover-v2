@@ -1,4 +1,4 @@
-package com.bitcloverv2;
+package com.pdob.bitclover;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;

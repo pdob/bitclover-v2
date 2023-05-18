@@ -1,4 +1,4 @@
-package com.bitcloverv2;
+package com.pdob.bitclover;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
