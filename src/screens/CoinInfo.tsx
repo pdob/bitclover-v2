@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { View, Text, Pressable, StyleSheet, Image, ScrollView } from 'react-native'
+import { 
+  View, 
+  Text,
+  StyleSheet, 
+  Image, 
+  ScrollView 
+} from 'react-native'
 import appClient from '../clients/AppClient'
 import colors from '../constants/colors'
 import Button from '../components/Button'
@@ -9,14 +15,20 @@ import Separator from '../components/Separator'
 import { useAppSelector } from '../hooks/redux'
 import { LineGraph } from 'react-native-graph'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
-import { formatCurrency, calculatePercentageChange, getPercentageForTimePeriod, formatLargeNumbers, getCurrencySymbol } from '../functions/utils'
+import { 
+  formatCurrency, 
+  calculatePercentageChange, 
+  getPercentageForTimePeriod, 
+  formatLargeNumbers, 
+  getCurrencySymbol 
+} from '../functions/utils'
 import Loader from '../components/Loader'
 import { SupportedCurrencies } from '../types/Home'
 import { CoinData } from '../types/Home'
 import { ChartData, CurrencyObject } from '../types/CoinInfo'
 import { ImageSourcePropType } from 'react-native'
 import { ApplicationScreenProps } from '../types/Navigation'
-import { Svg, Defs, Stop, LinearGradient, Rect } from 'react-native-svg'
+import SelectTimePeriod from '../components/SelectTimePeriod'
 
 export const timePeriods = [1, 7, 30, 60, 365, 'max'] as const
 export type TimePeriod = typeof timePeriods[number]
@@ -48,44 +60,42 @@ const CoinInformation = ({
   currency: SupportedCurrencies
   currencySymbol: string
 }) => (
-  <View>
-    <View style={styles.statContainer}>
-      <CoinStat
-        title="Market rank"
-        value={coinData.market_cap_rank}
-        icon={icons.marketRank}
-      />
-      <Separator />
-      <CoinStat
-        title="Market cap"
-        value={`${currencySymbol}${formatLargeNumbers(coinData.market_cap[currency as keyof CurrencyObject])}`}
-        icon={icons.marketCap}
-      />
-      <Separator />
-      <CoinStat
-        title="Circulating supply"
-        value={formatLargeNumbers(coinData.circulating_supply)}
-        icon={icons.circulatingSupply}
-      />
-      <Separator />
-      <CoinStat
-        title="Total supply"
-        value={formatLargeNumbers(coinData.total_supply)}
-        icon={icons.totalSupply}
-      />
-      <Separator />
-      <CoinStat
-        title="All time high"
-        value={formatCurrency(coinData.ath[currency as keyof CurrencyObject], currency)}
-        icon={icons.ath}
-      />
-      <Separator />
-      <CoinStat
-        title="ATH date"
-        value={new Date(coinData.ath_date[currency as keyof CurrencyObject]).toUTCString().slice(0, 16)}
-        icon={icons.athDate}
-      />
-    </View>
+  <View style={styles.statContainer}>
+    <CoinStat
+      title="Market rank"
+      value={coinData.market_cap_rank}
+      icon={icons.marketRank}
+    />
+    <Separator />
+    <CoinStat
+      title="Market cap"
+      value={`${currencySymbol}${formatLargeNumbers(coinData.market_cap[currency as keyof CurrencyObject])}`}
+      icon={icons.marketCap}
+    />
+    <Separator />
+    <CoinStat
+      title="Circulating supply"
+      value={formatLargeNumbers(coinData.circulating_supply)}
+      icon={icons.circulatingSupply}
+    />
+    <Separator />
+    <CoinStat
+      title="Total supply"
+      value={formatLargeNumbers(coinData.total_supply)}
+      icon={icons.totalSupply}
+    />
+    <Separator />
+    <CoinStat
+      title="All time high"
+      value={formatCurrency(coinData.ath[currency as keyof CurrencyObject], currency)}
+      icon={icons.ath}
+    />
+    <Separator />
+    <CoinStat
+      title="ATH date"
+      value={new Date(coinData.ath_date[currency as keyof CurrencyObject]).toUTCString().slice(0, 16)}
+      icon={icons.athDate}
+    />
   </View>
 )
 
@@ -145,65 +155,6 @@ const CoinInfo = ({
     getData()
   }, [coinId, chartData?.length, timePeriod])
 
-  const getPeriodLabel = (period: TimePeriod) => {
-    switch(period) {
-    case 1:
-    case 7:
-    case 30:
-    case 60:
-      return `${period}D`
-    case 365:
-      return '1Y'
-    case 'max':
-      return period.toUpperCase()
-    }
-  }
-
-  const SelectTimePeriod = () => {
-    return (
-      <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', height: 70, padding: 15 }}>
-        {timePeriods.map((period, index) => (
-          <Pressable
-            key={index}
-            style={{ height: 50, width: 50 }} 
-            onPress={() => {
-              setTimePeriod(period)
-            }}
-          >
-            <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}>
-              {timePeriod === period ? (
-                <Svg height="50" width="50" >
-                  <Defs>
-                    <LinearGradient id="grad" x1="20%" y1="0%" x2="20%" y2="100%">
-                      <Stop
-                        offset="10%"
-                        stopColor={colors.backgroundLight}
-                        stopOpacity={0.7} 
-                      />
-                      <Stop
-                        offset="100%"
-                        stopOpacity={0.2}
-                        stopColor={colors.text} 
-                      />
-                    </LinearGradient>
-                  </Defs>
-                  <Text style={styles.selectedPeriodText}>
-                    {getPeriodLabel(timePeriod)}
-                  </Text>
-                  <Rect x="0" y="0" width="50" height="50" fill="url(#grad)" rx="10" />
-                </Svg>
-              ) : (
-                <Text style={{ fontWeight: '700', color: colors.text }}>
-                  {getPeriodLabel(period)}
-                </Text>
-              )}
-            </View>
-          </Pressable>
-        ))}
-      </View>
-    )
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       {loading ? <Loader /> : (
@@ -255,7 +206,9 @@ const CoinInfo = ({
               gradientFillColors={percentagePositive ? gradientsPositive : gradientsNegative}
             />
           </View>
-          <SelectTimePeriod />
+
+          <SelectTimePeriod onPress={setTimePeriod} buttons={timePeriods}/>
+
           <View style={{ flex: 1 }}>
             <CoinInformation
               coinData={data!} 
@@ -335,7 +288,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: colors.backgroundSecondary,
-    margin: 15
+    margin: 15,
+    top: -15
   },
   image: {
     height: 15,
