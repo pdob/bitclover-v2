@@ -1,12 +1,18 @@
 import React from 'react'
-import {Pressable, View, Text, Image, StyleSheet} from 'react-native'
-import {useNavigation} from '@react-navigation/core'
+import { 
+  Pressable, 
+  View, 
+  Text, 
+  Image, 
+  StyleSheet
+} from 'react-native'
+import  { useNavigation } from '@react-navigation/core'
 import { formatCurrency } from '../functions/utils'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
 import icons from '../constants/icons'
 import { ApplicationScreenProps } from '../types/Navigation'
-import { addFavourite, MarketListItemProps, removeFavourite, clear } from '../store/slices/favouritesSlice'
+import { addFavourite, MarketListItemProps, removeFavourite } from '../store/slices/favouritesSlice'
 
 const MarketListItem = (item: MarketListItemProps) => {
   const navigation = useNavigation<ApplicationScreenProps<'CoinInfo'>['navigation']>()

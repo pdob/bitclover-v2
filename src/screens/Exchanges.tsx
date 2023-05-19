@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Pressable, Image, StyleSheet, Linking } from 'react-native' 
+import { 
+  View, 
+  Text, 
+  Pressable, 
+  Image, 
+  StyleSheet, 
+  Linking 
+} from 'react-native' 
 import { useAppSelector } from '../hooks/redux'
 import { FlashList } from '@shopify/flash-list'
 import appClient from '../clients/AppClient'
@@ -93,14 +100,14 @@ const Exchanges = () => {
         const json = await appClient.getAllExchanges()
         const priceJson = await appClient.getCoinPrice('bitcoin')
         if (json.status){
-          setError(handleError(json.status))
+          setError(handleError(json.status.error_message))
         } else {
           setData(json)
           setBtcPrice(priceJson.bitcoin[currency.toLowerCase()])
         }
         setLoading(false)
       } catch (error) {
-        setError(handleError(error))
+        setError(handleError(error.message))
         setLoading(false)
       }}
     getData()

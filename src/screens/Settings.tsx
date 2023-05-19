@@ -1,5 +1,11 @@
 import React from 'react'
-import { View, Text, Pressable, StyleSheet, ScrollView, Linking } from 'react-native'
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  Linking 
+} from 'react-native'
 import DropdownMenu from '../components/DropdownMenu'
 import HomeHeader from '../components/HomeHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'

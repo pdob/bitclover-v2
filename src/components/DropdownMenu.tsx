@@ -1,6 +1,6 @@
-import React, { ReactElement, useRef, useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import colors from '../constants/colors'
 import Separator from './Separator'
 

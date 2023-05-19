@@ -1,5 +1,11 @@
 import React, { useState, useEffect} from 'react'
-import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native'
+import { 
+  View, 
+  Text, 
+  FlatList, 
+  StyleSheet, 
+  ScrollView 
+} from 'react-native'
 import HomeHeader from '../components/HomeHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import appClient from '../clients/AppClient'
@@ -23,12 +29,14 @@ const Home = () => {
         setLoading(true)
         const json = await appClient.getAllCoinPrices(currency)
         if (json?.status) {
-          setError(handleError(json.status))
+          setError(handleError(json.status.error_message))
         }
         setData(sortData(json))
         setLoading(false)
       } catch (error) {
-        setError(handleError(error))
+        if(!error) {
+          setError(handleError(error.message))
+        }
         setLoading(false)
       }
     }

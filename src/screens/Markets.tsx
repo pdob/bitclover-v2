@@ -1,5 +1,12 @@
 import React, { useState, useEffect} from 'react'
-import { View, Text, StyleSheet, TextInput, Pressable, Image } from 'react-native'
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  Pressable, 
+  Image 
+} from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import colors from '../constants/colors'
@@ -143,14 +150,14 @@ const Markets = () => {
         setLoading(true)
         const json = await appClient.getAllCoinPrices(currency, 500)
         if(json.status) {
-          setError(handleError(json.status))
+          setError(handleError(json.status.error_message))
         } else  {
           setData(json)
           setFilteredData(json)
         }
         setLoading(false)
       } catch (error) {
-        setError(handleError(error))
+        setError(handleError(error.message))
         setLoading(false)
       }
     }

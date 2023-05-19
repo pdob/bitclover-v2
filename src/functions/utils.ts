@@ -74,14 +74,12 @@ export const getPercentageForTimePeriod = (data: ChartData, timePeriod: TimePeri
   return value.toFixed(2)
 }
 
-export const handleError = ({error} : {
-  error: ApiError | JsError
-}): string => {
+export const handleError = (error: ApiError | JsError) : string => {
   switch(error) {
   case error as ApiError:
-    return `${error.error_message} \n( Free API Limitations :( )`
+    return `${error} \n( Free API Limitations :( )`
   case error as JsError:
-    return error.message
+    return `${error}`
   default:
     return 'An unknown error has occured.'
   }

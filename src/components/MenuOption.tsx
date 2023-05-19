@@ -1,5 +1,11 @@
 import React from 'react'
-import { View, Text, Pressable, StyleSheet, Image } from 'react-native'
+import { 
+  View, 
+  Text,
+  Pressable, 
+  StyleSheet, 
+  Image 
+} from 'react-native'
 import colors from '../constants/colors'
 
 const MenuOption = ({

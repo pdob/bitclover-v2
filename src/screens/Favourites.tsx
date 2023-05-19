@@ -24,13 +24,13 @@ const Favourites = () => {
         setLoading(true)
         const json = await appClient.fetchFavourites(favourites, currency)
         if(json.status) {
-          setError(handleError(json.status))
+          setError(handleError(json.status.error_message))
         } else {
           setData(json)
         }
         setLoading(false)
       } catch (error) {
-        setError(handleError(error))
+        setError(handleError(error.message))
         setLoading(false)
       }
     }
