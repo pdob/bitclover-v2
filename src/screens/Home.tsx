@@ -62,9 +62,9 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.background}>
       {error ? <Error error={error} /> : (
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <HomeHeader />
-          <View style={{ flex: 1, justifyContent: 'space-evenly', paddingHorizontal: 10 }}>
+          <View style={{ flex: 1, paddingHorizontal: 10 }}>
             <View style={styles.flatlistContainer}>
               <Text style={styles.headingText}>Most Popular</Text>
               {loading ? <Loader /> : (
@@ -107,14 +107,15 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: '#152121',
+    backgroundColor: colors.backgroundPrimary,
     flex: 1
   },
   flatlistContainer: {
     borderRadius: 10,
     backgroundColor: colors.backgroundSecondary, 
     padding: 10,
-    height: 200
+    height: 200,
+    marginVertical: 10
   },
   headingText: {
     color: colors.text,
