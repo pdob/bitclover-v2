@@ -7,7 +7,7 @@ import Animated, {
   withRepeat,
   useAnimatedStyle,
   cancelAnimation,
-  withSequence
+  withDelay
 } from 'react-native-reanimated'
 import colors from '../constants/colors'
 
@@ -17,66 +17,37 @@ const Loader = () => {
   const dot3Color = useSharedValue(colors.text)
 
   const animateDots = () => {
-    const duration = 500
-    const delay = 100 
-
-    //workaround since withRepeat doesn't work with withDelay in Reanimated
-
-    dot1Color.value = withRepeat(
-      withSequence(
+    dot1Color.value = withDelay(100, 
+      withRepeat(
         withTiming(colors.backgroundPrimary, {
-          duration,
-          easing: Easing.in(Easing.linear),
+          duration: 400,
+          easing: Easing.in(Easing.linear)
         }),
-        withTiming(colors.text, {
-          duration,
-          easing: Easing.in(Easing.linear),
-        })
-      ),
-      -1,
-      true
+        -1,
+        true
+      )
     )
-  
-    dot2Color.value = withRepeat(
-      withSequence(
-        withTiming(colors.text, {
-          duration: duration - delay,
-          easing: Easing.in(Easing.linear),
+
+    dot2Color.value = withDelay(200, 
+      withRepeat(
+        withTiming(colors.backgroundPrimary, {
+          duration: 400,
+          easing: Easing.in(Easing.linear)
         }),
-        withTiming(colors.backgroundSecondary, {
-          duration,
-          easing: Easing.in(Easing.linear),
-        }),
-        withTiming(colors.text, {
-          duration,
-          easing: Easing.in(Easing.linear),
-        })
-      ),
-      -1,
-      true
+        -1,
+        true
+      )
     )
-  
-    dot3Color.value = withRepeat(
-      withSequence(
-        withTiming(colors.text, {
-          duration: duration - 2 * delay,
-          easing: Easing.in(Easing.linear),
+
+    dot3Color.value = withDelay(300, 
+      withRepeat(
+        withTiming(colors.backgroundPrimary, {
+          duration: 400,
+          easing: Easing.in(Easing.linear)
         }),
-        withTiming(colors.text, {
-          duration: duration - delay,
-          easing: Easing.in(Easing.linear),
-        }),
-        withTiming(colors.backgroundTernary, {
-          duration,
-          easing: Easing.in(Easing.linear),
-        }),
-        withTiming(colors.text, {
-          duration,
-          easing: Easing.in(Easing.linear),
-        })
-      ),
-      -1,
-      true
+        -1,
+        true
+      )
     )
   }
   
@@ -109,7 +80,12 @@ const Loader = () => {
   })
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+    <View style={{ 
+      flexDirection: 'row', 
+      alignItems: 'center', 
+      flex: 1, 
+      justifyContent: 'center' 
+    }}>
       <Animated.View
         style={[
           {
@@ -118,7 +94,7 @@ const Loader = () => {
             borderRadius: 50,
             marginRight: 3,
           },
-          dot1Style,
+          dot1Style
         ]}
       />
       <Animated.View
@@ -129,7 +105,7 @@ const Loader = () => {
             borderRadius: 50,
             marginRight: 3,
           },
-          dot2Style,
+          dot2Style
         ]}
       />
       <Animated.View
@@ -140,7 +116,7 @@ const Loader = () => {
             borderRadius: 50,
             marginRight: 3,
           },
-          dot3Style,
+          dot3Style
         ]}
       />
     </View>
