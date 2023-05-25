@@ -1,11 +1,12 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { 
   View, 
   Text, 
   StyleSheet, 
   TextInput, 
   Pressable, 
-  Image 
+  Image,
+  RefreshControl 
 } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -116,10 +117,11 @@ const Markets = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [searchVisible, setSearchVisible] = useState<boolean>(false)
+  const [refreshing, setRefreshing] = useState<boolean>(false)
 
   const [sortOrder, setSortOrder] = useState('asc')
   const [sortProperty, setSortProperty] = useState('market_cap_rank')
-
+  
 
   const handlePress = (property: string) => {
     let newSortOrder = 'asc'
@@ -176,6 +178,15 @@ const Markets = () => {
     setFilteredData(newData)
   }
 
+  const wait = (timeout: number) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    wait(1000).then(() => setRefreshing(false))
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
       {loading ? <Loader /> : error ? <Error error={error} /> : (
@@ -198,6 +209,12 @@ const Markets = () => {
               extraData={sortOrder} 
               ListEmptyComponent={() => 
                 <ListEmpty message="Sorry, we can't find the asset you're looking for."/>
+              }
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
               }
             />
           </View>
