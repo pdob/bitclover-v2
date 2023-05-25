@@ -55,7 +55,7 @@ const Settings = ({ navigation } : { navigation: ApplicationScreenProps<'Setting
           <MenuOption option='Rate BitClover' onPress={() => InAppReview.RequestInAppReview()}/>
         </View>
         <View style={{ flex : 1}}>
-          <Text style={{ color: colors.text, fontSize: 15, fontWeight: '500', paddingLeft: 7.5}}>
+          <Text style={styles.versionText}>
             BitClover v1.0.0
           </Text>
         </View>
@@ -87,6 +87,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     flex: 1
+  },
+  versionText: {
+    color: colors.text, 
+    fontSize: 15, 
+    fontWeight: '500', 
+    paddingLeft: 7.5
   }
 })
 

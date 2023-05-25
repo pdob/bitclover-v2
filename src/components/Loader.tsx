@@ -20,7 +20,7 @@ const Loader = () => {
     dot1Color.value = withDelay(100, 
       withRepeat(
         withTiming(colors.backgroundPrimary, {
-          duration: 400,
+          duration: 500,
           easing: Easing.in(Easing.linear)
         }),
         -1,
@@ -31,7 +31,7 @@ const Loader = () => {
     dot2Color.value = withDelay(200, 
       withRepeat(
         withTiming(colors.backgroundPrimary, {
-          duration: 400,
+          duration: 500,
           easing: Easing.in(Easing.linear)
         }),
         -1,
@@ -42,7 +42,7 @@ const Loader = () => {
     dot3Color.value = withDelay(300, 
       withRepeat(
         withTiming(colors.backgroundPrimary, {
-          duration: 400,
+          duration: 500,
           easing: Easing.in(Easing.linear)
         }),
         -1,

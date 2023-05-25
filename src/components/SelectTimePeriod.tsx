@@ -34,7 +34,7 @@ const SelectTimePeriod = ({
   const buttonStyle = (index: number) => {
     const animatedStyle = useAnimatedStyle(() => {
       const isActive = activeIndex.value === index
-      const backgroundColor = isActive ? colors.backgroundTernary : 'transparent'
+      const backgroundColor = isActive ? colors.backgroundSecondary : 'transparent'
 
       return {
         backgroundColor: withTiming(backgroundColor, { duration: 800, easing: Easing.inOut(Easing.ease) })

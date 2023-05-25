@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
   },
   coinStatContainer: {
     flexDirection: 'row',
+    alignItems: 'center'
   },
   coinStatImage: {
     height: 20,
@@ -258,8 +259,8 @@ const styles = StyleSheet.create({
   },
   coinStatText: {
     color: colors.text,
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   coinStatTitle: {
     padding: 10,
