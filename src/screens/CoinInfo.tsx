@@ -30,8 +30,8 @@ import { ImageSourcePropType } from 'react-native'
 import { ApplicationScreenProps } from '../types/Navigation'
 import SelectTimePeriod from '../components/SelectTimePeriod'
 
-export const timePeriods = [1, 7, 30, 60, 365, 'max'] as const
-export type TimePeriod = typeof timePeriods[number]
+export const timePeriods = [1, 7, 30, 60, 365, 'max']
+export type TimePeriod = 1 | 7 | 30 | 60 | 365 | 'max'
 
 const CoinStat = ({
   icon, 
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'flex-end', 
     alignItems: 'center', 
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 10
   }
 })
