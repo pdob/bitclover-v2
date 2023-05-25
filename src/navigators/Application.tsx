@@ -12,6 +12,7 @@ import colors from '../constants/colors'
 import CoinInfo from '../screens/CoinInfo'
 import Privacy from '../screens/Privacy'
 import Terms from '../screens/Terms'
+import RNBootSplash from 'react-native-bootsplash'
 
 const Stack = createNativeStackNavigator<ApplicationStackParamList>()
 
@@ -24,7 +25,7 @@ const ApplicationNavigator = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
-      <NavigationContainer>
+      <NavigationContainer onReady={() => RNBootSplash.hide()}>
         <StatusBar/>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Main" component={MainNavigator} />

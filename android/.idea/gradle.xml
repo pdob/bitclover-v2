@@ -18,7 +18,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="corretto-11" />
+        <option name="gradleJvm" value="azul-11" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -27,6 +27,7 @@
             <option value="$PROJECT_DIR$/../node_modules/@react-native-masked-view/masked-view/android" />
             <option value="$PROJECT_DIR$/../node_modules/@shopify/flash-list/android" />
             <option value="$PROJECT_DIR$/../node_modules/@shopify/react-native-skia/android" />
+            <option value="$PROJECT_DIR$/../node_modules/react-native-bootsplash/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-config/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-flipper/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-gesture-handler/android" />
