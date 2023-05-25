@@ -9,6 +9,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming, 
+  Easing
 } from 'react-native-reanimated'
 import colors from '../constants/colors'
 import { TimePeriod } from '../screens/CoinInfo'
@@ -33,13 +34,12 @@ const SelectTimePeriod = ({
   const buttonStyle = (index: number) => {
     const animatedStyle = useAnimatedStyle(() => {
       const isActive = activeIndex.value === index
-      const backgroundColor = isActive ? colors.backgroundLight: 'transparent'
+      const backgroundColor = isActive ? colors.backgroundTernary : 'transparent'
 
       return {
-        backgroundColor: withTiming(backgroundColor, { duration: 400 })
+        backgroundColor: withTiming(backgroundColor, { duration: 800, easing: Easing.inOut(Easing.ease) })
       }
     })
-
     return animatedStyle
   }
 
@@ -104,8 +104,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   buttonText: {
-    fontWeight: '700',
-    color: colors.text
+    fontWeight: '800',
+    color: colors.text,
+    fontSize: 13
   },
 })
 
