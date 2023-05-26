@@ -1,4 +1,4 @@
-import { SupportedCurrencies } from "./Home";
+import { SupportedCurrencies } from './Home'
 
 export interface CurrencyObject {
   [key: SupportedCurrencies]: number
@@ -20,7 +20,7 @@ export type CoinData = {
   atl_change_percentage: object
   atl_date: object
   circulating_supply: number
-  current_price: PriceObject
+  current_price?: PriceObject
   fully_diluted_valuation: object
   high_24h: object
   last_updated: string
@@ -58,3 +58,39 @@ export type CoinPrice = {
     [key: string]: number
   }
 }
+
+export type CoinInfo = {
+  additional_notices: []
+  asset_platform_id: string
+  block_time_in_minutes: number
+  categories: string[]
+  coingecko_rank: number
+  coingecko_score: number
+  community_score: number
+  contract_address: string
+  country_origin: string
+  description: object
+  detail_platforms: object
+  developer_score: number
+  genesis_date: null
+  hashing_algorithm: null
+  id: string
+  image: object
+  last_updated: string
+  links: object
+  liquidity_score: number
+  market_cap_rank: number
+  market_data: CoinData
+  name: string
+  platforms: object
+  public_interest_score: number
+  public_interest_stats: object
+  public_notice: null
+  sentiment_votes_down_percentage: number
+  sentiment_votes_up_percentage: number
+  status_updates: []
+  symbol: string
+  watchlist_portfolio_users: number
+}
+
+
