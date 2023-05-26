@@ -27,7 +27,7 @@ import { SupportedCurrencies } from '../types/Home'
 import { CoinData } from '../types/Home'
 import { ChartData, CurrencyObject } from '../types/CoinInfo'
 import { ImageSourcePropType } from 'react-native'
-import { ApplicationScreenProps } from '../types/Navigation'
+import { AppStackScreenProps } from '../types/Navigation'
 import SelectTimePeriod from '../components/SelectTimePeriod'
 
 export const timePeriods = [1, 7, 30, 60, 365, 'max']
@@ -103,7 +103,7 @@ const CoinInfo = ({
   navigation, 
   route
 } : 
-  ApplicationScreenProps<'CoinInfo'>
+  AppStackScreenProps<'CoinInfo'>
 ) => {
 
   const [data, setData] = useState<CoinData>()
@@ -235,12 +235,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   },
-  chartDateTime: {
-    color: 'grey',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-  },
   coinStat: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -312,17 +306,10 @@ const styles = StyleSheet.create({
     flex: 1, 
     opacity: 0.5 
   },
-  selectedPeriodText: {
-    textAlign: 'center', 
-    paddingTop: 16, 
-    color: colors.text,
-    fontWeight: '700'
-  },
   buttonContainer: {
     flex: 1, 
     justifyContent: 'flex-end', 
-    alignItems: 'center', 
-    paddingTop: 10,
+    alignItems: 'center',
     paddingBottom: 10
   }
 })

@@ -13,10 +13,10 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { changeCurrency, changeInitialScreen } from '../store/slices/settingsSlice'
 import colors from '../constants/colors'
 import MenuOption from '../components/MenuOption'
-import { ApplicationScreenProps } from '../types/Navigation'
+import { MainScreenProps } from '../types/Navigation'
 import InAppReview from 'react-native-in-app-review'
 
-const Settings = ({ navigation } : { navigation: ApplicationScreenProps<'Settings'>['navigation'] }) => {
+const Settings = ({ navigation } : { navigation: MainScreenProps<'Settings'>['navigation'] }) => {
   const dispatch = useAppDispatch()
   const currency = useAppSelector((state) => state.settings.currency)
   const initialScreen = useAppSelector((state) => state.settings.initialScreen)
