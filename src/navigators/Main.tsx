@@ -9,8 +9,9 @@ import TabBarIcon from '../components/TabBarIcon'
 import icons from '../constants/icons'
 import { useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
+import { MainParamsList } from '../types/Navigation'
 
-const MainTab = createBottomTabNavigator()
+const MainTab = createBottomTabNavigator<MainParamsList>()
 
 // @refresh reset
 const MainNavigator = () => {

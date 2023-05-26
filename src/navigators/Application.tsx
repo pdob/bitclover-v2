@@ -7,14 +7,14 @@ import {
 } from '@react-navigation/native'
 import MainNavigator from './Main'
 import { useFlipper } from '@react-navigation/devtools'
-import { ApplicationStackParamList } from '../types/Navigation'
+import { AppStackParamsList } from '../types/Navigation'
 import colors from '../constants/colors'
 import CoinInfo from '../screens/CoinInfo'
 import Privacy from '../screens/Privacy'
 import Terms from '../screens/Terms'
 import RNBootSplash from 'react-native-bootsplash'
 
-const Stack = createNativeStackNavigator<ApplicationStackParamList>()
+const Stack = createNativeStackNavigator<AppStackParamsList>()
 
 // @refresh reset
 const ApplicationNavigator = () => {
