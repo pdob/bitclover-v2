@@ -13,7 +13,7 @@ import { CoinData, SortedData } from '../types/Home'
 import HomeCoinInfoCard from '../components/HomeCoinInfoCard'
 import { useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
-import { handleError } from '../functions/utils'
+import { handleError, JsError } from '../functions/utils'
 import Loader from '../components/Loader'
 import Error from '../components/Error'
 
@@ -27,16 +27,16 @@ const Home = () => {
     const getData = async () => {
       try {
         setLoading(true)
-        const json = await appClient.getAllCoinPrices(currency)
-        if (json?.status) {
-          setError(handleError(json.status.error_message))
+        const json = await appClient.getAllCoinPrices(currency)        
+        if ('status' in json) {
+          setError(handleError({ error: json }))
+          setLoading(false)
+        } else {
+          setData(sortData(json))
+          setLoading(false)
         }
-        setData(sortData(json))
-        setLoading(false)
-      } catch (error) {
-        if(!error) {
-          setError(handleError(error.message))
-        }
+      } catch (error) {     
+        setError(handleError({ error: error as JsError }))
         setLoading(false)
       }
     }

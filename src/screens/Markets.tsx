@@ -1,4 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { 
+  useState, 
+  useEffect, 
+  useCallback 
+} from 'react'
 import { 
   View, 
   Text, 
@@ -19,6 +23,7 @@ import { handleError } from '../functions/utils'
 import Error from '../components/Error'
 import ListEmpty from '../components/ListEmpty'
 import Loader from '../components/Loader'
+import { JsError } from '../functions/utils'
 
 export const renderMarketItem = ({item} : {item: CoinData}) => {
   return (
@@ -122,6 +127,7 @@ const Markets = () => {
   const [sortOrder, setSortOrder] = useState('asc')
   const [sortProperty, setSortProperty] = useState('market_cap_rank')
   
+  const currency = useAppSelector((state) => state.settings.currency)
 
   const handlePress = (property: string) => {
     let newSortOrder = 'asc'
@@ -144,22 +150,21 @@ const Markets = () => {
     }
   }
 
-  const currency = useAppSelector((state) => state.settings.currency)
-
   useEffect(() => {
     const getData = async () => {
       try {
         setLoading(true)
-        const json = await appClient.getAllCoinPrices(currency, 500)
-        if(json.status) {
-          setError(handleError(json.status.error_message))
-        } else  {
+        const json = await appClient.getAllCoinPrices(currency, 500)      
+        if ('status' in json) {
+          setError(handleError({ error: json }))
+          setLoading(false)
+        } else {
           setData(json)
           setFilteredData(json)
+          setLoading(false)
         }
-        setLoading(false)
-      } catch (error) {
-        setError(handleError(error.message))
+      } catch (error) {     
+        setError(handleError({ error: error as JsError }))
         setLoading(false)
       }
     }
@@ -179,7 +184,7 @@ const Markets = () => {
   }
 
   const wait = (timeout: number) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
+    return new Promise(resolve => setTimeout(resolve, timeout))
   }
 
   const onRefresh = useCallback(() => {

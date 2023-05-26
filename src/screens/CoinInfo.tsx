@@ -20,15 +20,17 @@ import {
   calculatePercentageChange, 
   getPercentageForTimePeriod, 
   formatLargeNumbers, 
-  getCurrencySymbol 
+  getCurrencySymbol,
+  handleError, 
+  JsError
 } from '../functions/utils'
 import Loader from '../components/Loader'
 import { SupportedCurrencies } from '../types/Home'
-import { CoinData } from '../types/Home'
-import { ChartData, CurrencyObject } from '../types/CoinInfo'
+import { ChartData, CurrencyObject, CoinData } from '../types/CoinInfo'
 import { ImageSourcePropType } from 'react-native'
 import { AppStackScreenProps } from '../types/Navigation'
 import SelectTimePeriod from '../components/SelectTimePeriod'
+import Error from '../components/Error'
 
 export const timePeriods = [1, 7, 30, 60, 365, 'max']
 export type TimePeriod = 1 | 7 | 30 | 60 | 365 | 'max'
@@ -115,6 +117,7 @@ const CoinInfo = ({
   const [currentPrice, setCurrentPrice] = useState<number>(0)
   const [percentageChange, setPercentageChange] = useState<number>(0)
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(1)
+  const [error, setError] = useState<string>('')
 
   const { coinId, coinName, coinImage } = route.params
   const currency = useAppSelector((state) => state.settings.currency)
@@ -135,21 +138,30 @@ const CoinInfo = ({
       try {
         const a = await appClient.getCoinInfo(coinId)
         const b = await appClient.getCoinChartData(coinId, currency, timePeriod) 
-        setData(a)
-        setChartData(b.prices.map((item: ChartData) => {
-          return {
-            date: new Date(item[0]),
-            value: item[1],
-          }
-        }))
-        setCurrentPrice(data?.current_price[currency.toLowerCase()])
-        setPrice(currentPrice)
-        if (data && chartData?.length) {
-          setPercentageChange(getPercentageForTimePeriod(data, timePeriod))
+        if('status' in a) {
+          setError(handleError({error: a }))
           setLoading(false)
+        } else if ('status' in b) {
+          setError(handleError({error: b }))
+          setLoading(false)
+        } else {
+          setData(a.market_data)
+          setChartData(b.prices.map((item: ChartData) => {
+            return {
+              date: new Date(item[0]),
+              value: item[1],
+            }
+          }))
+          setCurrentPrice(data?.current_price?.[currency.toLowerCase()] || 0)
+          setPrice(currentPrice)
+          if (data && chartData?.length) {
+            setPercentageChange(getPercentageForTimePeriod(data, timePeriod))
+            setLoading(false)
+          }
         }
       } catch (error) {
-        console.log(error)
+        handleError({ error: error as JsError })
+        setLoading(false)
       }
     }
     getData()
@@ -157,7 +169,7 @@ const CoinInfo = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? <Loader /> : (
+      {loading ? <Loader /> : error ? <Error error={error} /> : (
         <ScrollView>
           <View style={styles.headingContainer}>
             <View style={styles.titleContainer}>

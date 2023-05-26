@@ -10,6 +10,7 @@ import Error from '../components/Error'
 import ListEmpty from '../components/ListEmpty'
 import { handleError } from '../functions/utils'
 import Loader from '../components/Loader'
+import { JsError } from '../functions/utils'
 
 const Favourites = () => {
   const favourites = useAppSelector((state) => state.favourites.ids)
@@ -22,15 +23,16 @@ const Favourites = () => {
     const getData = async () => {
       try {
         setLoading(true)
-        const json = await appClient.fetchFavourites(favourites, currency)
-        if(json.status) {
-          setError(handleError(json.status.error_message))
+        const json = await appClient.fetchFavourites(favourites, currency)    
+        if ('status' in json) {
+          setError(handleError({ error: json }))
+          setLoading(false)
         } else {
           setData(json)
+          setLoading(false)
         }
-        setLoading(false)
-      } catch (error) {
-        setError(handleError(error.message))
+      } catch (error) {     
+        setError(handleError({ error: error as JsError }))
         setLoading(false)
       }
     }

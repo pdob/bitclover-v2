@@ -1,14 +1,16 @@
-import { CoinData, SupportedCurrencies } from '../types/Home'
+import { SupportedCurrencies } from '../types/Home'
 import millify from 'millify'
 import { TimePeriod } from '../screens/CoinInfo'
 import { ChartData } from '../types/CoinInfo'
 
-interface ApiError {
-  error_code: number
-  error_message: string
+export interface ApiError {
+  status: {
+    error_code: number
+    error_message: string
+  }
 }
 
-interface JsError {
+export interface JsError {
   jsEngine: string
   message: string
   stack: string
@@ -74,13 +76,12 @@ export const getPercentageForTimePeriod = (data: ChartData, timePeriod: TimePeri
   return value.toFixed(2)
 }
 
-export const handleError = (error: ApiError | JsError) : string => {
-  switch(error) {
-  case error as ApiError:
-    return `${error} \n( Free API Limitations :( )`
-  case error as JsError:
-    return `${error}`
-  default:
-    return 'An unknown error has occured.'
+export const handleError = ({error} : {error: ApiError | JsError}) : string => {
+  if ('status' in error) {
+    return `${error.status.error_message} \n( Free API Limitations :( )`
+  } else if ('message' in error) {
+    return error.message
+  } else {
+    return 'An unknown error has occurred.'
   }
 }

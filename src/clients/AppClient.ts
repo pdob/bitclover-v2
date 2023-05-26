@@ -1,8 +1,9 @@
 import {Config} from 'react-native-config'
 import { TimePeriod } from '../screens/CoinInfo'
-import { ChartData, CoinPrice } from '../types/CoinInfo'
+import { ChartData, CoinPrice, CoinInfo } from '../types/CoinInfo'
 import { CoinData, SupportedCurrencies } from '../types/Home'
 import { ExchangeItem } from '../screens/Exchanges'
+import { ApiError } from '../functions/utils'
 
 class AppClient {
   private API_URL: string
@@ -21,34 +22,34 @@ class AppClient {
     return `ids=${formattedIds}`
   }
   
-  public async getAllCoinPrices(currency: SupportedCurrencies, perPage = 100) {
+  public async getAllCoinPrices(currency: SupportedCurrencies, perPage = 100): Promise<CoinData[] | ApiError> {
     const response = await this.makeRequest<CoinData[]>(`coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=1&sparkline=false&locale=en`)
     return response
   }
 
-  public async getCoinInfo(id: string): Promise<CoinData> {
-    const response = await this.makeRequest(`coins/${id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false`)
-    return response.market_data
+  public async getCoinInfo(id: string): Promise<CoinInfo | ApiError> {
+    const response = await this.makeRequest<CoinInfo>(`coins/${id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false`)
+    return response
   }
 
-  public async getCoinChartData(id: string, currency: SupportedCurrencies, days: TimePeriod): ChartData {
+  public async getCoinChartData(id: string, currency: SupportedCurrencies, days: TimePeriod): Promise<ChartData | ApiError> {
     const response = await this.makeRequest<ChartData>(`coins/${id}/market_chart?vs_currency=${currency}&days=${days}&interval=${
       days <= 30 ? 'hourly' : 'daily'
     }`)
     return response
   }
 
-  public async fetchFavourites(ids: string[], currency: SupportedCurrencies): Promise<CoinData[] | []>{
+  public async fetchFavourites(ids: string[], currency: SupportedCurrencies): Promise<CoinData[] | [] | ApiError>{
     const response = await this.makeRequest<CoinData[]>(`coins/markets?vs_currency=${currency}&${this.formatFavouritesQuery(ids)}&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`)
     return ids.length ? response : []
   }
   
-  public async getAllExchanges(perPage = 50): Promise<ExchangeItem[]>{
+  public async getAllExchanges(perPage = 50): Promise<ExchangeItem[] | ApiError>{
     const response = await this.makeRequest<ExchangeItem[]>(`exchanges?per_page=${perPage}`)
     return response
   }
 
-  public async getCoinPrice(id: string): Promise<CoinPrice> {
+  public async getCoinPrice(id: string): Promise<CoinPrice | ApiError> {
     const response = await this.makeRequest<CoinPrice>(`simple/price?ids=${id}&vs_currencies=usd%2Cgbp%2Ceur`)
     return response
   }
