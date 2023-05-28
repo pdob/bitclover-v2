@@ -25,7 +25,7 @@ const ApplicationNavigator = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
-      <NavigationContainer onReady={() => RNBootSplash.hide()}>
+      <NavigationContainer onReady={() => RNBootSplash.hide({ fade: true })}>
         <StatusBar/>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Main" component={MainNavigator} />
