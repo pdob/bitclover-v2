@@ -15,5 +15,5 @@ module.exports = {
     '<rootDir>/src/App.tsx',
   ],
   coverageReporters: ['html', 'text', 'text-summary', 'cobertura'],
-  testMatch: ['**/*.test.ts?(x)', '**/*.test.js?(x)'],
-};
+  testMatch: ['**/*.test.ts?(x)', '**/*.test.js?(x)']
+}

@@ -3,9 +3,6 @@ import 'whatwg-fetch'
 import 'react-native-gesture-handler/jestSetup'
 import '@testing-library/jest-native/extend-expect'
 
-// jest.mock('react-native-reanimated', () =>
-//   require('react-native-reanimated/mock'),
-// )
 
 jest.mock('redux-persist', () => {
   const real = jest.requireActual('redux-persist')
@@ -24,4 +21,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 
 // Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
-
+ 
+jest.mock('react-native-reanimated', () =>
+  require('react-native-reanimated/mock')
+)
