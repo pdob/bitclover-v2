@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, SetStateAction, Dispatch } from 'react'
 import { 
   View, 
   Text, 
@@ -19,7 +19,7 @@ const SelectTimePeriod = ({
   onPress 
 } : { 
   buttons: Array<string | number> 
-  onPress: (button: number | string) => void
+  onPress: Dispatch<SetStateAction<TimePeriod>>
 }) => {
   const activeIndex = useSharedValue(0)
   const translateX = useSharedValue(0)
@@ -28,7 +28,7 @@ const SelectTimePeriod = ({
   const handlePress = (index: number) => {
     activeIndex.value = index
     translateX.value = withTiming(-index * buttonWidth)
-    onPress(buttons[index])
+    onPress(buttons[index] as TimePeriod)
   }
 
   const buttonStyle = (index: number) => {
