@@ -3,7 +3,14 @@ import { View, Text, Image } from 'react-native'
 import colors from '../constants/colors'
 
 const Error = ({ error } : { error: string }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  <View 
+    style={{ 
+      flex: 1, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+    }}
+    testID="error"
+  >
     <Image 
       source={require('../assets/error.png')}
       style={{ height: 75, width: 75 }}

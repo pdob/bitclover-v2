@@ -80,12 +80,15 @@ const Loader = () => {
   })
 
   return (
-    <View style={{ 
-      flexDirection: 'row', 
-      alignItems: 'center', 
-      flex: 1, 
-      justifyContent: 'center' 
-    }}>
+    <View 
+      style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        flex: 1, 
+        justifyContent: 'center' 
+      }}
+      testID="loader"
+    >
       <Animated.View
         style={[
           {
