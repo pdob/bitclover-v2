@@ -107,7 +107,6 @@ const CoinInfo = ({
 } : 
   AppStackScreenProps<'CoinInfo'>
 ) => {
-
   const [data, setData] = useState<CoinData>()
   const [chartData, setChartData] = useState<ChartData>([])
   const [loading, setLoading] = useState(true)
@@ -138,7 +137,7 @@ const CoinInfo = ({
       try {
         const a = await appClient.getCoinInfo(coinId)
         const b = await appClient.getCoinChartData(coinId, currency, timePeriod) 
-        if('status' in a) {
+        if ('status' in a) {
           setError(handleError({error: a }))
           setLoading(false)
         } else if ('status' in b) {
@@ -152,7 +151,7 @@ const CoinInfo = ({
               value: item[1],
             }
           }))
-          setCurrentPrice(data?.current_price?.[currency.toLowerCase()] || 0)
+          setCurrentPrice(a.market_data.current_price?.[currency.toLowerCase()] || 0)
           setPrice(currentPrice)
           if (data && chartData?.length) {
             setPercentageChange(getPercentageForTimePeriod(data, timePeriod))
@@ -223,7 +222,7 @@ const CoinInfo = ({
 
           <View style={{ flex: 1 }}>
             <CoinInformation
-              coinData={data!} 
+              coinData={data} 
               currency={currency.toLowerCase() as SupportedCurrencies}
               currencySymbol={getCurrencySymbol(currency)} 
             />

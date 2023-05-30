@@ -6,7 +6,7 @@ const Button = ({buttonText, onPress}: {buttonText: string, onPress: () => void}
   <Pressable 
     style={{ 
       height: 50, 
-      width: 150, 
+      width: 125, 
       backgroundColor: colors.backgroundTernary,
       borderRadius: 10,
       justifyContent: 'center',
@@ -18,7 +18,7 @@ const Button = ({buttonText, onPress}: {buttonText: string, onPress: () => void}
     onPress={onPress}
   >
 
-    <Text style={{ color: colors.text, fontWeight: '500', fontSize: 20 }}>
+    <Text style={{ color: colors.text, fontWeight: '500', fontSize: 16 }}>
       {buttonText}
     </Text>
   </Pressable>

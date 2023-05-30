@@ -1,4 +1,4 @@
-import React, { useEffect, SetStateAction, Dispatch } from 'react'
+import React, { SetStateAction, Dispatch } from 'react'
 import { 
   View, 
   Text, 
@@ -22,22 +22,20 @@ const SelectTimePeriod = ({
   onPress: Dispatch<SetStateAction<TimePeriod>>
 }) => {
   const activeIndex = useSharedValue(0)
-  const translateX = useSharedValue(0)
   const buttonWidth = 50
 
   const handlePress = (index: number) => {
     activeIndex.value = index
-    translateX.value = withTiming(-index * buttonWidth)
     onPress(buttons[index] as TimePeriod)
   }
 
   const buttonStyle = (index: number) => {
     const animatedStyle = useAnimatedStyle(() => {
       const isActive = activeIndex.value === index
-      const backgroundColor = isActive ? colors.backgroundSecondary : 'transparent'
+      const backgroundColor = isActive ? colors.backgroundTernary : 'transparent'
 
       return {
-        backgroundColor: withTiming(backgroundColor, { duration: 800, easing: Easing.inOut(Easing.ease) })
+        backgroundColor: withTiming(backgroundColor, { duration: 800, easing: Easing.in(Easing.ease) })
       }
     })
     return animatedStyle
@@ -57,14 +55,10 @@ const SelectTimePeriod = ({
     }
   }
 
-  useEffect(() => {
-    translateX.value = 0
-  }, [activeIndex.value])
-
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <Animated.View style={[styles.buttonsWrapper, { transform: [{ translateX: translateX.value }] }]}>
+        <Animated.View style={styles.buttonsWrapper}>
           {buttons.map((label, index) => (
             <Pressable
               key={index}
