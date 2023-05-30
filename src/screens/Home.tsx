@@ -17,6 +17,23 @@ import { handleError, JsError } from '../functions/utils'
 import Loader from '../components/Loader'
 import Error from '../components/Error'
 
+export const sortData = (data: CoinData[]): SortedData => {
+  const popular = data.slice(0, 20)
+  
+  const sortedByGain = data.slice().sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+  const gain = sortedByGain.slice(0, 20)
+  
+  const sortedByLoss = data.slice().sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
+  const loss = sortedByLoss.slice(0, 20)
+  
+  return {
+    popular,
+    gain,
+    loss
+  }
+}
+
+
 const Home = () => {
   const [data, setData] = useState<SortedData>()
   const [error, setError] = useState<string>('')
@@ -42,22 +59,6 @@ const Home = () => {
     }
     getData()
   }, [currency])
-
-  const sortData = (data: CoinData[]): SortedData => {
-    const popular = data.slice(0, 20)
-    
-    const sortedByGain = data.slice().sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
-    const gain = sortedByGain.slice(0, 20)
-    
-    const sortedByLoss = data.slice().sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
-    const loss = sortedByLoss.slice(0, 20)
-    
-    return {
-      popular,
-      gain,
-      loss
-    }
-  }
 
   return (
     <SafeAreaView style={styles.background}>
