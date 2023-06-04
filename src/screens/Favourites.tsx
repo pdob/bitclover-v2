@@ -15,30 +15,25 @@ import ListEmpty from '../components/ListEmpty'
 import { handleError } from '../functions/utils'
 import Loader from '../components/Loader'
 import { AxiosError } from 'axios'
+import { useQuery } from '@tanstack/react-query'
 
 const Favourites = () => {
   const favourites = useAppSelector((state) => state.favourites.ids)
   const currency = useAppSelector((state) => state.settings.currency)
-  const [data, setData] = useState<CoinData[]>()
-  const [error, setError] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
-
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ['favourites', favourites, currency],
+    queryFn: async () => await appClient.fetchFavourites(favourites, currency),
+    retryDelay: 10000,
+    retry: 2
+  })
+  
   useEffect(() => {
-    const getData = async () => {
-      try {
-        if (favourites.length) {
-          setLoading(true)
-        }
-        const json = await appClient.fetchFavourites(favourites, currency)    
-        setData(json)
-        setLoading(false)      
-      } catch (error) {     
-        setError(handleError({ error: error as AxiosError }))
-        setLoading(false)
-      }
+    if (error) {
+      setErrorMessage(handleError({ error: error as AxiosError}))
     }
-    getData()
-  }, [favourites, currency])
+  }, [error])
 
   const renderItem = useCallback(
     ({ item } : {item: CoinData}) => {
@@ -57,7 +52,7 @@ const Favourites = () => {
   
   return (
     <View style={{ backgroundColor: colors.backgroundPrimary, flex: 1}}>
-      {loading ? <Loader /> : error ? <Error error={error} /> : (
+      {isLoading ? <Loader /> : isError ? <Error error={errorMessage} /> : (
         <>
           <FlashList
             estimatedItemSize={75}
