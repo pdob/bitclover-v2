@@ -69,7 +69,9 @@ describe('Home component', () => {
         current_price: 25000,
         image: 'sampleurl',
         price_change_24h: 1250,
-        price_change_percentage_24h: 10
+        price_change_percentage_24h: 10,
+        market_cap_rank: 1,
+        symbol: 'BTC'
       },
       {
         id: 'ethereum',
@@ -77,7 +79,9 @@ describe('Home component', () => {
         current_price: 1500,
         image: 'sampleurl',
         price_change_24h: -10,
-        price_change_percentage_24h: -1.5
+        price_change_percentage_24h: -1.5,
+        market_cap_rank: 2,
+        symbol: 'ETH'
       },
       {
         id: 'binancecoin',
@@ -85,7 +89,9 @@ describe('Home component', () => {
         current_price: 250.50,
         image: 'sampleurl',
         price_change_24h: 10,
-        price_change_percentage_24h: 2.5
+        price_change_percentage_24h: 2.5,
+        market_cap_rank: 3,
+        symbol: 'BNB'
       }
     ]
     

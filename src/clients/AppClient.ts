@@ -22,8 +22,8 @@ class AppClient {
     return `ids=${formattedIds}`
   }
   
-  public async getAllCoinPrices(currency: SupportedCurrencies, perPage = 100): Promise<CoinData[]> {
-    const response = await this.makeRequest<CoinData[]>(`coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=1&sparkline=false&locale=en`)
+  public async getAllCoinPrices(currency: SupportedCurrencies, perPage = 100, page = 1): Promise<CoinData[]> {
+    const response = await this.makeRequest<CoinData[]>(`coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=false&locale=en`)
     return response
   }
 
