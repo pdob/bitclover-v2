@@ -17,6 +17,7 @@ import { handleError } from '../functions/utils'
 import Loader from '../components/Loader'
 import Error from '../components/Error'
 import { AxiosError } from 'axios'
+import { useQuery } from '@tanstack/react-query'
 
 export const sortData = (data: CoinData[]): SortedData => {
   const popular = data.slice(0, 20)
@@ -35,37 +36,40 @@ export const sortData = (data: CoinData[]): SortedData => {
 }
 
 const Home = () => {
-  const [data, setData] = useState<SortedData>()
-  const [error, setError] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
+  const [sortedData, setSortedData] = useState<SortedData>()
+  const [errorMsg, setErrorMsg] = useState<string>('')
   const currency = useAppSelector((state) => state.settings.currency)
 
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['home', currency, 200],
+    queryFn: async () => await appClient.getAllCoinPrices(currency, 200),
+    refetchInterval: 65000,
+    retry: 2,
+    retryDelay: 10000,
+    staleTime: Infinity
+  })
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        setLoading(true)
-        const json = await appClient.getAllCoinPrices(currency)        
-        setData(sortData(json))
-        setLoading(false)
-      } catch (error) {     
-        setError(handleError({ error: error as AxiosError}))
-        setLoading(false)
-      }
+    if (error) {
+      setErrorMsg(handleError({ error: error as AxiosError}))
     }
-    getData()
-  }, [currency])
+    if (data) {
+      setSortedData(sortData(data))
+    }
+  }, [error, data])
+
 
   return (
     <SafeAreaView style={styles.background}>
-      {error ? <Error error={error} /> : (
+      {error ? <Error error={errorMsg} /> : (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <HomeHeader />
           <View style={{ flex: 1, paddingHorizontal: 10 }}>
             <View style={styles.flatlistContainer}>
               <Text style={styles.headingText}>Most Popular</Text>
-              {loading ? <Loader /> : (
+              {isLoading ? <Loader /> : (
                 <FlatList 
-                  data={data?.popular}
+                  data={sortedData?.popular}
                   renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
                   keyExtractor={item => item.id}
                   horizontal
@@ -74,9 +78,9 @@ const Home = () => {
             </View>
             <View style={styles.flatlistContainer}>
               <Text style={styles.headingText}>Highest Gainers</Text>
-              {loading ? <Loader /> : (
+              {isLoading ? <Loader /> : (
                 <FlatList 
-                  data={data?.gain}
+                  data={sortedData?.gain}
                   renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
                   keyExtractor={item => item.id}
                   horizontal
@@ -85,9 +89,9 @@ const Home = () => {
             </View>
             <View style={styles.flatlistContainer}>
               <Text style={styles.headingText}>Biggest Losers</Text>
-              {loading ? <Loader /> : (
+              {isLoading ? <Loader /> : (
                 <FlatList
-                  data={data?.loss}
+                  data={sortedData?.loss}
                   renderItem={({ item }) => <HomeCoinInfoCard coinInfo={item} />}
                   keyExtractor={item => item.id}
                   horizontal
