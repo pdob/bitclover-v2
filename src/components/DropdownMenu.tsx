@@ -73,11 +73,7 @@ const DropdownMenu = ({
               <Text
                 style={[styles.text, {
                   fontWeight: selectedItem === option ? '700' : '400',
-                  fontSize: selectedItem === option ? 16 : 14,
-                  textShadowColor: colors.text,
-                  shadowOpacity: selectedItem === option ? 0.2 : 0,
-                  shadowRadius: 2,
-                  shadowColor: colors.textDarker
+                  fontSize: selectedItem === option ? 15 : 14
                 }]}
                 
               >

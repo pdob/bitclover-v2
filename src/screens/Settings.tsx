@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: colors.text,
-    fontSize: 18,
+    fontSize: 16,
     paddingBottom: 10,
-    fontWeight: '500'
+    fontWeight: '600'
   },
   aboutContainer: {
     backgroundColor: colors.backgroundSecondary,
