@@ -6,14 +6,19 @@ import { store } from './store/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import ApplicationNavigator from './navigators/Application'
 import { persistor } from './store/store'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 const App = () => (
   <GestureHandlerRootView style={{ flex: 1 }}>
-    <Provider store={store}>
-      <PersistGate persistor={persistor} loading={null}>
-        <ApplicationNavigator />
-      </PersistGate>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor} loading={null}>
+          <ApplicationNavigator />
+        </PersistGate>
+      </Provider>
+    </QueryClientProvider>
   </GestureHandlerRootView>
 )
 
