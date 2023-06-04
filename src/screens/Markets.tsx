@@ -24,7 +24,7 @@ import Error from '../components/Error'
 import ListEmpty from '../components/ListEmpty'
 import Loader from '../components/Loader'
 import { AxiosError } from 'axios'
-
+import { useQuery } from '@tanstack/react-query'
 
 const Header = ({
   searchVisible,
@@ -103,14 +103,13 @@ const Header = ({
 
 const Markets = () => {
 
-  const [data, setData] = useState<CoinData[]>([])
   const [filteredData, setFilteredData] = useState<CoinData[]>([])
   const [sortedData, setSortedData] = useState<CoinData[]>([])
   const [query, setQuery] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string>('')
+  const [errorMsg, setErrorMsg] = useState<string>('')
   const [searchVisible, setSearchVisible] = useState<boolean>(false)
   const [refreshing, setRefreshing] = useState<boolean>(false)
+  const [page, setPage] = useState<number>(1)
 
   const [sortOrder, setSortOrder] = useState('asc')
   const [sortProperty, setSortProperty] = useState('market_cap_rank')
@@ -128,8 +127,8 @@ const Markets = () => {
 
   const sortBy = (property: string, order: string) => {
     return (a: CoinData, b: CoinData) => {
-      const aValue = a[property as keyof CoinData]
-      const bValue = b[property as keyof CoinData]
+      const aValue = a[property as keyof CoinData] ?? 0
+      const bValue = b[property as keyof CoinData] ?? 0
       if (order === 'asc') {
         return aValue > bValue ? 1 : -1
       } else {
@@ -138,21 +137,32 @@ const Markets = () => {
     }
   }
 
+  const {
+    isLoading,
+    error,
+    data,
+    isFetching,
+    isPreviousData
+  } = useQuery({
+    queryKey: ['markets', currency, 100, page],
+    queryFn: async () => await appClient.getAllCoinPrices(currency, 100, page),
+    keepPreviousData : true,
+    staleTime: Infinity,
+    retry: 1,
+    refetchInterval: 60000
+  })
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        setLoading(true)
-        const json = await appClient.getAllCoinPrices(currency, 500)      
-        setData(json)
-        setFilteredData(json)
-        setLoading(false) 
-      } catch (error) {     
-        setError(handleError({ error: error as AxiosError }))
-        setLoading(false)
-      }
+    if (data) {
+      setFilteredData(data)
     }
-    getData()
-  }, [currency])
+  }, [data])
+
+  useEffect(() => {
+    if (error) {
+      setErrorMsg(handleError({ error: error as AxiosError}))
+    }
+  }, [error])
 
   useEffect(() => {
     setSortedData(filteredData?.slice().sort(sortBy(sortProperty, sortOrder)))
@@ -160,10 +170,10 @@ const Markets = () => {
 
   const handleSearch = (query: string) => {
     setQuery(query)
-    const newData = data.filter((item) => 
+    const newData = data?.filter((item) => 
       item.name.toLowerCase().includes(query.toLowerCase()) 
       || item.symbol?.toLowerCase().includes(query.toLowerCase()))
-    setFilteredData(newData)
+    setFilteredData(newData || [])
   }
 
   const wait = (timeout: number) => {
@@ -176,7 +186,7 @@ const Markets = () => {
   }, [])
 
   const renderItem = useCallback(
-    ({ item } : {item: CoinData}) => {
+    ({ item } : { item: CoinData }) => {
       return (
         <MarketListItem
           id={item.id}
@@ -188,11 +198,11 @@ const Markets = () => {
           symbol={item.symbol}
         />
       )
-    }, [])
+    }, [data])
 
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? <Loader /> : error ? <Error error={error} /> : (
+      {isLoading || isFetching ? <Loader /> : error ? <Error error={errorMsg} /> : (
         <>
           <View>
             <Header 
@@ -219,6 +229,11 @@ const Markets = () => {
                   onRefresh={onRefresh}
                 />
               }
+              onEndReached={() => {
+                if (!isPreviousData && !query) {
+                  setPage(page => page + 1)
+                }
+              }}
             />
           </View>
         </>
