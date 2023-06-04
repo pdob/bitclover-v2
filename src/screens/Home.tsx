@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   View, 
   Text, 
@@ -13,9 +13,10 @@ import { CoinData, SortedData } from '../types/Home'
 import HomeCoinInfoCard from '../components/HomeCoinInfoCard'
 import { useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
-import { handleError, JsError } from '../functions/utils'
+import { handleError } from '../functions/utils'
 import Loader from '../components/Loader'
 import Error from '../components/Error'
+import { AxiosError } from 'axios'
 
 export const sortData = (data: CoinData[]): SortedData => {
   const popular = data.slice(0, 20)
@@ -33,27 +34,21 @@ export const sortData = (data: CoinData[]): SortedData => {
   }
 }
 
-
 const Home = () => {
   const [data, setData] = useState<SortedData>()
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
   const currency = useAppSelector((state) => state.settings.currency)
-  
+
   useEffect(() => {
     const getData = async () => {
       try {
         setLoading(true)
         const json = await appClient.getAllCoinPrices(currency)        
-        if ('status' in json) {
-          setError(handleError({ error: json }))
-          setLoading(false)
-        } else {
-          setData(sortData(json))
-          setLoading(false)
-        }
+        setData(sortData(json))
+        setLoading(false)
       } catch (error) {     
-        setError(handleError({ error: error as JsError }))
+        setError(handleError({ error: error as AxiosError}))
         setLoading(false)
       }
     }

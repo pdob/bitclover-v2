@@ -21,8 +21,7 @@ import {
   getPercentageForTimePeriod, 
   formatLargeNumbers, 
   getCurrencySymbol,
-  handleError, 
-  JsError
+  handleError
 } from '../functions/utils'
 import Loader from '../components/Loader'
 import { SupportedCurrencies } from '../types/Home'
@@ -31,6 +30,7 @@ import { ImageSourcePropType } from 'react-native'
 import { AppStackScreenProps } from '../types/Navigation'
 import SelectTimePeriod from '../components/SelectTimePeriod'
 import Error from '../components/Error'
+import { AxiosError } from 'axios'
 
 export const timePeriods = [1, 7, 30, 60, 365, 'max']
 export type TimePeriod = 1 | 7 | 30 | 60 | 365 | 'max'
@@ -137,29 +137,21 @@ const CoinInfo = ({
       try {
         const a = await appClient.getCoinInfo(coinId)
         const b = await appClient.getCoinChartData(coinId, currency, timePeriod) 
-        if ('status' in a) {
-          setError(handleError({error: a }))
-          setLoading(false)
-        } else if ('status' in b) {
-          setError(handleError({error: b }))
-          setLoading(false)
-        } else {
-          setData(a.market_data)
-          setChartData(b.prices.map((item: ChartData) => {
-            return {
-              date: new Date(item[0]),
-              value: item[1],
-            }
-          }))
-          setCurrentPrice(a.market_data.current_price?.[currency.toLowerCase()] || 0)
-          setPrice(currentPrice)
-          if (data && chartData?.length) {
-            setPercentageChange(getPercentageForTimePeriod(data, timePeriod))
-            setLoading(false)
+        setData(a.market_data)
+        setChartData(b.prices.map((item: ChartData) => {
+          return {
+            date: new Date(item[0]),
+            value: item[1],
           }
-        }
+        }))
+        setCurrentPrice(a.market_data.current_price?.[currency.toLowerCase()] || 0)
+        setPrice(currentPrice)
+        if (data && chartData?.length) {
+          setPercentageChange(getPercentageForTimePeriod(data, timePeriod))
+          setLoading(false)
+        }     
       } catch (error) {
-        handleError({ error: error as JsError })
+        setError(handleError({ error: error as AxiosError }))
         setLoading(false)
       }
     }
@@ -222,7 +214,7 @@ const CoinInfo = ({
 
           <View style={{ flex: 1 }}>
             <CoinInformation
-              coinData={data} 
+              coinData={data!} 
               currency={currency.toLowerCase() as SupportedCurrencies}
               currencySymbol={getCurrencySymbol(currency)} 
             />

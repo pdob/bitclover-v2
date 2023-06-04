@@ -23,20 +23,8 @@ import { handleError } from '../functions/utils'
 import Error from '../components/Error'
 import ListEmpty from '../components/ListEmpty'
 import Loader from '../components/Loader'
-import { JsError } from '../functions/utils'
+import { AxiosError } from 'axios'
 
-export const renderMarketItem = ({item} : {item: CoinData}) => {
-  return (
-    <MarketListItem
-      id={item.id}
-      image={item.image}
-      name={item.name}
-      price={item.current_price}
-      rank={item.market_cap_rank}
-      percentage={item.price_change_percentage_24h}
-      symbol={item.symbol}
-    />
-  )}
 
 const Header = ({
   searchVisible,
@@ -155,16 +143,11 @@ const Markets = () => {
       try {
         setLoading(true)
         const json = await appClient.getAllCoinPrices(currency, 500)      
-        if ('status' in json) {
-          setError(handleError({ error: json }))
-          setLoading(false)
-        } else {
-          setData(json)
-          setFilteredData(json)
-          setLoading(false)
-        }
+        setData(json)
+        setFilteredData(json)
+        setLoading(false) 
       } catch (error) {     
-        setError(handleError({ error: error as JsError }))
+        setError(handleError({ error: error as AxiosError }))
         setLoading(false)
       }
     }
@@ -179,7 +162,7 @@ const Markets = () => {
     setQuery(query)
     const newData = data.filter((item) => 
       item.name.toLowerCase().includes(query.toLowerCase()) 
-      || item.symbol.toLowerCase().includes(query.toLowerCase()))
+      || item.symbol?.toLowerCase().includes(query.toLowerCase()))
     setFilteredData(newData)
   }
 
@@ -191,6 +174,21 @@ const Markets = () => {
     setRefreshing(true)
     wait(1000).then(() => setRefreshing(false))
   }, [])
+
+  const renderItem = useCallback(
+    ({ item } : {item: CoinData}) => {
+      return (
+        <MarketListItem
+          id={item.id}
+          image={item.image}
+          name={item.name}
+          price={item.current_price}
+          rank={item.market_cap_rank}
+          percentage={item.price_change_percentage_24h}
+          symbol={item.symbol}
+        />
+      )
+    }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -209,7 +207,7 @@ const Markets = () => {
             <FlashList
               estimatedItemSize={75}
               data={query ? filteredData : sortedData}
-              renderItem={renderMarketItem}
+              renderItem={renderItem}
               ItemSeparatorComponent={() => <View style={{ backgroundColor: colors.separator, height: 0.5 }} />}
               extraData={sortOrder} 
               ListEmptyComponent={() => 

@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { 
+  useEffect, 
+  useState,
+  useCallback 
+} from 'react'
 import { 
   View, 
   Text, 
@@ -10,13 +14,14 @@ import {
 import { useAppSelector } from '../hooks/redux'
 import { FlashList } from '@shopify/flash-list'
 import appClient from '../clients/AppClient'
-import { ApiError, formatLargeNumbers, handleError, JsError } from '../functions/utils'
+import { formatLargeNumbers, handleError } from '../functions/utils'
 import colors from '../constants/colors'
 import Separator from '../components/Separator'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Error from '../components/Error'
 import Loader from '../components/Loader'
 import { SupportedCurrencies } from '../types/Home'
+import { AxiosError } from 'axios'
 
 export type ExchangeItem = {
   id: string
@@ -99,19 +104,11 @@ const Exchanges = () => {
         setLoading(true)
         const json = await appClient.getAllExchanges()
         const priceJson = await appClient.getCoinPrice('bitcoin')
-        if ('status' in json){
-          setError(handleError({ error: json }))
-          setLoading(false)
-        } else if('status' in priceJson) {
-          setError(handleError({ error: priceJson as ApiError }))
-          setLoading(false)
-        } else {
-          setData(json)
-          setBtcPrice(priceJson.bitcoin[currency.toLowerCase()])
-        }
+        setData(json)
+        setBtcPrice(priceJson.bitcoin[currency.toLowerCase()])
         setLoading(false)
       } catch (error) {
-        setError(handleError({ error: error as JsError }))
+        setError(handleError({ error: error as AxiosError }))
         setLoading(false)
       }}
     getData()
