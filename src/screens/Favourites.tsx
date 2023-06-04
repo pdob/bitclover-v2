@@ -16,11 +16,12 @@ import { handleError } from '../functions/utils'
 import Loader from '../components/Loader'
 import { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import Separator from '../components/Separator'
 
 const Favourites = () => {
   const favourites = useAppSelector((state) => state.favourites.ids)
   const currency = useAppSelector((state) => state.settings.currency)
-  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [errorMsg, setErrorMsg] = useState<string>('')
   
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ['favourites', favourites, currency],
@@ -31,7 +32,7 @@ const Favourites = () => {
   
   useEffect(() => {
     if (error) {
-      setErrorMessage(handleError({ error: error as AxiosError}))
+      setErrorMsg(handleError({ error: error as AxiosError}))
     }
   }, [error])
 
@@ -52,14 +53,14 @@ const Favourites = () => {
   
   return (
     <View style={{ backgroundColor: colors.backgroundPrimary, flex: 1}}>
-      {isLoading ? <Loader /> : isError ? <Error error={errorMessage} /> : (
+      {isLoading ? <Loader /> : isError ? <Error error={errorMsg} /> : (
         <>
           <FlashList
             estimatedItemSize={75}
             extraData={favourites}
             data={data}
             renderItem={renderItem}
-            ItemSeparatorComponent={() => <View style={{ backgroundColor: colors.separator, height: 0.5 }} />}
+            ItemSeparatorComponent={() => <Separator />}
             ListEmptyComponent={() => <ListEmpty message="Add some items to your favourites to see them here!"/>} />
         </>
       )}
