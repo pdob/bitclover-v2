@@ -2,19 +2,7 @@ import { SupportedCurrencies } from '../types/Home'
 import millify from 'millify'
 import { TimePeriod } from '../screens/CoinInfo'
 import { ChartData } from '../types/CoinInfo'
-
-export interface ApiError {
-  status: {
-    error_code: number
-    error_message: string
-  }
-}
-
-export interface JsError {
-  jsEngine: string
-  message: string
-  stack: string
-}
+import { AxiosError } from 'axios'
 
 export const getCurrencySymbol = (currency: SupportedCurrencies): string => {
   switch(currency.toUpperCase()) {
@@ -76,12 +64,10 @@ export const getPercentageForTimePeriod = (data: ChartData, timePeriod: TimePeri
   return value.toFixed(2)
 }
 
-export const handleError = ({error} : {error: ApiError | JsError}) : string => {
-  if ('status' in error) {
-    return `${error.status.error_message} \n( Free API Limitations :( )`
-  } else if ('message' in error) {
-    return error.message
+export const handleError = ({error} : {error: AxiosError}) : string => {
+  if (error.response?.status === 429) {
+    return 'API call limit exceeded, please try again in a minute.'
   } else {
-    return 'An unknown error has occurred.'
+    return error.message
   }
 }
