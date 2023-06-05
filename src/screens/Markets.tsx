@@ -149,14 +149,14 @@ const Markets = () => {
     keepPreviousData : true,
     staleTime: Infinity,
     retry: 1,
-    refetchInterval: 60000
+    refetchInterval: 120000
   })
 
   useEffect(() => {
     if (data) {
       setFilteredData(data)
     }
-  }, [data])
+  }, [data, isFetching])
 
   useEffect(() => {
     if (error) {
@@ -198,11 +198,11 @@ const Markets = () => {
           symbol={item.symbol}
         />
       )
-    }, [data])
+    }, [data, isFetching])
 
   return (
     <SafeAreaView style={styles.container}>
-      {isLoading || isFetching ? <Loader /> : error ? <Error error={errorMsg} /> : (
+      {isLoading ? <Loader /> : error ? <Error error={errorMsg} /> : (
         <>
           <View>
             <Header 

@@ -40,12 +40,12 @@ const Home = () => {
   const [errorMsg, setErrorMsg] = useState<string>('')
   const currency = useAppSelector((state) => state.settings.currency)
 
-  const { data, error, isLoading } = useQuery({
+  const { data , error, isLoading, isFetching } = useQuery({
     queryKey: ['home', currency, 200],
     queryFn: async () => await appClient.getAllCoinPrices(currency, 200),
-    refetchInterval: 65000,
-    retry: 2,
-    retryDelay: 10000,
+    refetchInterval: 120000,
+    retry: 4,
+    retryDelay: 30000,
     staleTime: Infinity
   })
 
@@ -56,9 +56,8 @@ const Home = () => {
     if (data) {
       setSortedData(sortData(data))
     }
-  }, [error, data])
-
-
+  }, [error, data, isFetching])
+  
   return (
     <SafeAreaView style={styles.background}>
       {error ? <Error error={errorMsg} /> : (
