@@ -1,13 +1,41 @@
-import React from 'react'
-import { render, waitFor } from '@testing-library/react-native'
+import React, { ReactNode } from 'react'
+import { render, waitFor, renderHook } from '@testing-library/react-native'
 import Home, { sortData } from '../screens/Home'
-import appClient from '../clients/AppClient'
 import { Provider } from 'react-redux'
-import { store } from  '../store/store'
 import { CoinData } from '../types/Home'
 import MockNav from '../__mocks__/MockNav'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import configureStore from 'redux-mock-store'
+import { RootState } from '../store/store'
 
-jest.mock('../clients/AppClient')
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: Infinity
+    }
+  }
+})
+
+const mockStore = configureStore([])
+
+const mockState: Partial<RootState> = {
+  settings: {
+    currency: 'USD',
+    initialScreen: 'Home'
+  },
+  favourites: {
+    ids: []
+  }
+}
+
+const mockedStore = mockStore(mockState)
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={queryClient}>
+    {children}
+  </QueryClientProvider>
+)
 
 describe('Home component', () => {
   beforeEach(() => {
@@ -16,50 +44,11 @@ describe('Home component', () => {
 
   it('renders', () => {
     const home = render(
-      <Provider store={store}>
+      <Provider store={mockedStore}>
         <MockNav component={Home} />
       </Provider>
-    )
+      , { wrapper })
     expect(home).toBeDefined()
-  })
-
-  it.skip('renders with all the flatlists and correct API calls', async () => {
-    const clientSpy = jest.spyOn(appClient, 'getAllCoinPrices')
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const getPrices = clientSpy.mockResolvedValueOnce(new Promise(() => {}))
-
-    const { getByText } = render(
-      <Provider store={store}>
-        <MockNav component={Home} />
-      </Provider>
-    )
-
-    expect(getByText('Most Popular')).toBeTruthy()
-    expect(getByText('Highest Gainers')).toBeTruthy()
-    expect(getByText('Biggest Losers')).toBeTruthy()
-
-    await waitFor(() => expect(getPrices).toHaveBeenCalled())
-  })
-
-  it.skip('handles error during data fetching', async () => {
-    
-    const clientSpy = jest.spyOn(appClient, 'getAllCoinPrices')
-
-    clientSpy.mockRejectedValueOnce({ status: {
-      error_code: 500,
-      error_message: 'API Error'
-    }})
-
-    const { findByText } = render(
-      <Provider store={store}>
-        <MockNav component={Home} />
-      </Provider>
-    )
-  
-    const errorMessage = await findByText('API Error ( Free API Limitations :( )')
-
-    expect(errorMessage).toBeTruthy()
   })
 
   it('groups coin info data correctly', async () => {
@@ -99,4 +88,5 @@ describe('Home component', () => {
     const sortedData = sortData(mockCoinData)
     expect(sortedData.loss[0].id).toEqual('ethereum')
   })
+  
 })
