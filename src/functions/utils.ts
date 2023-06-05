@@ -61,7 +61,7 @@ export const getPercentageForTimePeriod = (data: ChartData, timePeriod: TimePeri
   } 
 
   const value = data[key]
-  return value.toFixed(2)
+  return value?.toFixed(2)
 }
 
 export const handleError = ({error} : {error: AxiosError}) : string => {

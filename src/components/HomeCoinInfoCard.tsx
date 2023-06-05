@@ -50,7 +50,7 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
             adjustsFontSizeToFit
             style={[styles.priceText, {color: coinInfo.price_change_24h > 0 ? 'green' : 'red'}]}
           >
-            {` ${currencySymbol}${coinInfo.price_change_24h.toFixed(2)}`}  
+            {` ${currencySymbol}${coinInfo?.price_change_24h?.toFixed(2)}`}  
           </Text>
         </View>
         <View style={styles.percentageContainer}>
@@ -59,7 +59,7 @@ const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
             style={[styles.priceText, {color: coinInfo.price_change_24h > 0 ? 'green' : 'red'}]}
           >
             ({coinInfo.price_change_24h > 0 ? '+' : ''}
-            {coinInfo.price_change_percentage_24h.toFixed(2)}%)
+            {coinInfo?.price_change_percentage_24h?.toFixed(2)}%)
           </Text>
         </View>
       </View>
