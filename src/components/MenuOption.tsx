@@ -10,16 +10,19 @@ import colors from '../constants/colors'
 
 const MenuOption = ({
   option,
-  onPress
+  onPress,
+  testId
 } : {
   option: string
-  onPress: () => void
+  onPress: () => void,
+  testId?: string
 }) => {
 
   return (
     <Pressable
       onPress={onPress}
       style={styles.background}
+      testID={testId}
     >
       <View style={styles.option}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

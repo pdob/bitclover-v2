@@ -34,6 +34,7 @@ const Settings = ({ navigation } : { navigation: MainScreenProps<'Settings'>['na
               currentValue={currency} 
               options={['GBP', 'USD', 'EUR']}
               onSelect={(item) => dispatch(changeCurrency(item))}
+              testId="Settings_dropdownCurrency"
             />
           </View>
           <View>
@@ -49,10 +50,26 @@ const Settings = ({ navigation } : { navigation: MainScreenProps<'Settings'>['na
         </View>
         <View style={styles.aboutContainer}>
           <Text style={styles.headingText}>About</Text>
-          <MenuOption option='Contact us' onPress={() => Linking.openURL('mailto: bitcloveruk@gmail.com')}/>
-          <MenuOption option='Privacy policy' onPress={() => navigation.navigate('Privacy')} />
-          <MenuOption option='Terms of use' onPress={() => navigation.navigate('Terms')} />
-          <MenuOption option='Rate BitClover' onPress={() => InAppReview.RequestInAppReview()}/>
+          <MenuOption 
+            option='Contact us' 
+            onPress={() => Linking.openURL('mailto: bitcloveruk@gmail.com')}
+            testId="Settings_contact"
+          />
+          <MenuOption 
+            option='Privacy policy' 
+            onPress={() => navigation.navigate('Privacy')} 
+            testId="Settings_privacy"
+          />
+          <MenuOption 
+            option='Terms of use' 
+            onPress={() => navigation.navigate('Terms')}
+            testId="Settings_terms" 
+          />
+          <MenuOption 
+            option='Rate BitClover' 
+            onPress={() => InAppReview.RequestInAppReview()}
+            testId="Settings_rate"
+          />
         </View>
         <View style={{ flex : 1}}>
           <Text style={styles.versionText}>

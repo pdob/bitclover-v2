@@ -8,11 +8,13 @@ import Separator from './Separator'
 const DropdownMenu = ({
   options,
   currentValue,
-  onSelect
+  onSelect,
+  testId
 } : {
   options: string[]
   currentValue: string
   onSelect: (item: string) => void
+  testId?: string
 }) => {
 
   const [openDropdown, setOpenDropdown] = useState<boolean>(false)
@@ -30,6 +32,7 @@ const DropdownMenu = ({
         setOpenDropdown(!openDropdown)
       }}
       style={styles.background}
+      testID={testId}
     >
       <View style={styles.option}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
