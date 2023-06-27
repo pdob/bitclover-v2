@@ -15,8 +15,8 @@ export type AppStackParamsList = {
   Terms: undefined
 }
 
-export type AppStackScreenProps<T> =
+export type AppStackScreenProps<T extends keyof AppStackParamsList> =
   NativeStackScreenProps<AppStackParamsList, T>
 
-export type MainScreenProps<T> =
+export type MainScreenProps<T extends keyof MainParamsList> =
   NativeStackScreenProps<MainParamsList, T>

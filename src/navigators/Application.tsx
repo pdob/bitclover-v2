@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native'
 import MainNavigator from './Main'
 import { useFlipper } from '@react-navigation/devtools'
-import { AppStackParamsList } from '../types/Navigation'
+import { AppStackParamsList } from '../types/navigation'
 import colors from '../constants/colors'
 import CoinInfo from '../screens/CoinInfo'
 import Privacy from '../screens/Privacy'
@@ -20,7 +20,6 @@ const Stack = createNativeStackNavigator<AppStackParamsList>()
 const ApplicationNavigator = () => {
 
   const navigationRef = useNavigationContainerRef()
-
   useFlipper(navigationRef)
 
   return (
