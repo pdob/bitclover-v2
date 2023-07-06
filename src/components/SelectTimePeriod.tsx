@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   buttonText: {
-    fontWeight: '800',
+    fontWeight: '700',
     color: colors.text,
-    fontSize: 13
+    fontSize: 13.5
   },
 })
 
