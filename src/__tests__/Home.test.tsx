@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { render, waitFor, renderHook } from '@testing-library/react-native'
+import { render } from '@testing-library/react-native'
 import Home, { sortData } from '../screens/Home'
 import { Provider } from 'react-redux'
 import { CoinData } from '../types/Home'
