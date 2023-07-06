@@ -1,16 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from '@reduxjs/toolkit'
 
-export type MarketListItemProps = {
-  id: string
-  name: string
-  image: string
-  price: number
-  percentage: number
-  rank: number
-  symbol: string
-}
-
-type InitialFavouriteState = {
+interface InitialFavouriteState {
   ids: string[]
 }
 
@@ -27,13 +17,10 @@ export const favouriteSlice = createSlice({
     },
     removeFavourite: (state, action) => {
       state.ids = [...state.ids.filter(item => item !== action.payload)]
-    },
-    clear: (state, action) => {
-      state.ids = []
     }
   }
 })
 
-export const { addFavourite, removeFavourite, clear } = favouriteSlice.actions
+export const { addFavourite, removeFavourite } = favouriteSlice.actions
 
 export default favouriteSlice.reducer

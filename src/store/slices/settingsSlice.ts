@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { SupportedCurrencies, AvailableScreens } from "BitCloverV2/src/types/Home"
+import { createSlice } from '@reduxjs/toolkit'
+import { SupportedCurrencies, AvailableScreens } from '../../types/Home'
 
-type SettingsSliceState = {
+interface SettingsSliceState {
   currency: SupportedCurrencies
   initialScreen: AvailableScreens
 }
