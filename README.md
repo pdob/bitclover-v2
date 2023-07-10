@@ -16,6 +16,7 @@ If there are problems with metro, try running the following command in terminal:
 ### iOS
 ```
 yarn install
+bundle install
 cd ios
 pod install
 cd ..
