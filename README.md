@@ -7,7 +7,7 @@ BitClover is a mobile app designed to show various information and statistics ab
 
 ```
 yarn install
-npx react-native run-android
+yarn react-native run-android
 ```
 If there are problems with metro, try running the following command in terminal:
 
@@ -19,7 +19,7 @@ yarn install
 cd ios
 pod install
 cd ..
-npx react-native run-ios
+yarn react-native run-ios
 ```
 
 ## Preview
