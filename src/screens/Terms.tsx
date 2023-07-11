@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { ScrollView, Text, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import HeaderBack from '../components/HeaderBack'
 import colors from '../constants/colors'
+import { AppStackScreenProps } from '../types/navigation'
 
-const Terms = () => (
+const Terms: FC<AppStackScreenProps<'Terms'>> = () => (
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundPrimary}}>
     <HeaderBack />
     <ScrollView style={styles.container}>

@@ -1,7 +1,7 @@
 import React, { 
   useEffect, 
   useState,
-  useCallback 
+  FC
 } from 'react'
 import { 
   View, 
@@ -22,6 +22,7 @@ import Error from '../components/Error'
 import Loader from '../components/Loader'
 import { SupportedCurrencies } from '../types/Home'
 import { AxiosError } from 'axios'
+import { MainScreenProps } from '../types/navigation'
 
 export type ExchangeItem = {
   id: string
@@ -89,7 +90,7 @@ const ExchangeListItem = ({
 )
 
 
-const Exchanges = () => {
+const Exchanges: FC<MainScreenProps<'Exchanges'>> = () => {
 
   const [data, setData] = useState<ExchangeItem[]>([])
   const [error, setError] = useState<string>('')

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { 
   View, 
   Text, 
@@ -16,7 +16,7 @@ import MenuOption from '../components/MenuOption'
 import { MainScreenProps } from '../types/navigation'
 import InAppReview from 'react-native-in-app-review'
 
-const Settings = ({ navigation } : { navigation: MainScreenProps<'Settings'>['navigation'] }) => {
+const Settings: FC<MainScreenProps<'Settings'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const currency = useAppSelector((state) => state.settings.currency)
   const initialScreen = useAppSelector((state) => state.settings.initialScreen)

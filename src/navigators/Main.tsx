@@ -13,7 +13,6 @@ import { MainParamsList } from '../types/navigation'
 
 const MainTab = createBottomTabNavigator<MainParamsList>()
 
-// @refresh reset
 const MainNavigator = () => {
   const initialScreen = useAppSelector((state) => state.settings.initialScreen)
   return (

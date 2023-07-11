@@ -18,7 +18,7 @@ const mockState: Partial<RootState> = {
   }
 }
 
-const mockNav = {
+const mockNav: any = {
   navigation: {
     navigate: jest.fn(),
   },
@@ -29,7 +29,7 @@ const mockNav = {
 
 const mockedStore = mockStore(mockState)
 
-describe('settings screen', () => {
+describe('Settings', () => {
   afterEach(() => cleanup())
   const navSpy = jest.spyOn(mockNav.navigation, 'navigate')
 

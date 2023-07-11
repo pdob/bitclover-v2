@@ -11,11 +11,11 @@ import { formatCurrency } from '../functions/utils'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import colors from '../constants/colors'
 import icons from '../constants/icons'
-import { ApplicationScreenProps } from '../types/Navigation'
+import { AppStackScreenProps } from '../types/navigation'
 import { addFavourite, MarketListItemProps, removeFavourite } from '../store/slices/favouritesSlice'
 
 const MarketListItem = (item: MarketListItemProps) => {
-  const navigation = useNavigation<ApplicationScreenProps<'CoinInfo'>['navigation']>()
+  const navigation = useNavigation<AppStackScreenProps<'CoinInfo'>['navigation']>()
   const dispatch = useAppDispatch()
   
   const currency = useAppSelector((state) => state.settings.currency)

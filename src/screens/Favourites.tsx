@@ -1,7 +1,8 @@
 import React, { 
   useEffect, 
   useState,
-  useCallback 
+  useCallback,
+  FC 
 } from 'react'
 import { View } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
@@ -17,8 +18,9 @@ import Loader from '../components/Loader'
 import { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import Separator from '../components/Separator'
+import { MainScreenProps } from '../types/navigation'
 
-const Favourites = () => {
+const Favourites: FC<MainScreenProps<'Favourites'>> = () => {
   const favourites = useAppSelector((state) => state.favourites.ids)
   const currency = useAppSelector((state) => state.settings.currency)
   const [errorMsg, setErrorMsg] = useState<string>('')

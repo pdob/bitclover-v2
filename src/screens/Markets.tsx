@@ -1,7 +1,8 @@
 import React, { 
   useState, 
   useEffect, 
-  useCallback 
+  useCallback,
+  FC 
 } from 'react'
 import { 
   View, 
@@ -25,6 +26,7 @@ import ListEmpty from '../components/ListEmpty'
 import Loader from '../components/Loader'
 import { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import { MainScreenProps } from '../types/navigation'
 
 const Header = ({
   searchVisible,
@@ -101,7 +103,7 @@ const Header = ({
 )
   
 
-const Markets = () => {
+const Markets: FC<MainScreenProps<'Markets'>> = () => {
 
   const [filteredData, setFilteredData] = useState<CoinData[]>([])
   const [sortedData, setSortedData] = useState<CoinData[]>([])

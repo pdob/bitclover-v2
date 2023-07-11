@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import { 
   View, 
   Text, 
   FlatList, 
   StyleSheet, 
-  ScrollView 
+  ScrollView
 } from 'react-native'
 import HomeHeader from '../components/HomeHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -18,6 +18,7 @@ import Loader from '../components/Loader'
 import Error from '../components/Error'
 import { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import { MainScreenProps } from '../types/navigation'
 
 export const sortData = (data: CoinData[]): SortedData => {
   const popular = data.slice(0, 20)
@@ -35,7 +36,7 @@ export const sortData = (data: CoinData[]): SortedData => {
   }
 }
 
-const Home = () => {
+const Home: FC<MainScreenProps<'Home'>> = () => {
   const [sortedData, setSortedData] = useState<SortedData>()
   const [errorMsg, setErrorMsg] = useState<string>('')
   const currency = useAppSelector((state) => state.settings.currency)
