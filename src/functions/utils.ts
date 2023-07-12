@@ -48,17 +48,23 @@ export const calculatePercentageChange = (currentPrice: number, priceAtPoint: nu
 export const getPercentageForTimePeriod = (data: ChartData, timePeriod: TimePeriod): number => {
   let key: string
 
-  if (timePeriod === 1) {
+  switch (timePeriod) {
+  case 1:
     key = 'price_change_percentage_24h'
-  } else if (timePeriod === 7) {
+    break
+  case 7:
     key = 'price_change_percentage_7d'
-  } else if (timePeriod === 30) {
+    break
+  case 30: 
     key = 'price_change_percentage_30d'
-  } else if (timePeriod === 60) {
+    break
+  case 60: 
     key = 'price_change_percentage_60d'
-  } else {
+    break
+  default:
     key = 'price_change_percentage_1y'
-  } 
+    break
+  }
 
   const value = data[key]
   return value?.toFixed(2)

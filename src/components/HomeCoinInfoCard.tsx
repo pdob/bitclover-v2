@@ -12,13 +12,14 @@ import { useAppSelector } from '../hooks/redux'
 import { getCurrencySymbol } from '../functions/utils'
 import { useNavigation } from '@react-navigation/core'
 import { formatCurrency } from '../functions/utils'
+import { AppStackScreenProps } from '../types/navigation'
 
 const HomeCoinInfoCard = ({coinInfo}: {coinInfo: CoinData}) => {
   const currency = useAppSelector((state) => state.settings.currency)
   const priceChangePositive = coinInfo.price_change_24h > 0
   const currencySymbol = getCurrencySymbol(currency)
 
-  const navigation = useNavigation()
+  const navigation = useNavigation<AppStackScreenProps<'CoinInfo'>['navigation']>()
 
   return (
     <Pressable 

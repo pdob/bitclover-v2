@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface InitialFavouriteState {
+interface FavouriteSliceState {
   ids: string[]
 }
 
-const initialState: InitialFavouriteState = {
+const initialState: FavouriteSliceState = {
   ids: []
 }
 

@@ -29,7 +29,7 @@ const MainNavigator = () => {
           fontWeight: 'bold',
           paddingBottom: 3
         },
-        tabBarActiveTintColor: 'white',
+        tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: '#62727b',
         headerShown: false
       }}
@@ -48,6 +48,7 @@ const MainNavigator = () => {
         options={{
           tabBarIcon: ({focused}) => 
             <TabBarIcon iconSrc={icons.markets} focused={focused} />,
+          unmountOnBlur: true
         }} 
       />
       <MainTab.Screen 

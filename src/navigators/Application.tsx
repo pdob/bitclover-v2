@@ -16,7 +16,6 @@ import RNBootSplash from 'react-native-bootsplash'
 
 const Stack = createNativeStackNavigator<AppStackParamsList>()
 
-// @refresh reset
 const ApplicationNavigator = () => {
 
   const navigationRef = useNavigationContainerRef()
